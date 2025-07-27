@@ -68,7 +68,7 @@ const AllContests = ({ userRegisteredOnly = false }) => {
     return new Date(dateString).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
-      hour: true,
+      hour12: true,
     });
   };
 
@@ -172,9 +172,7 @@ const AllContests = ({ userRegisteredOnly = false }) => {
                     <Calendar className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-blue-400">
-                      Date
-                    </p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-blue-400">Date</p>
                     <p className="text-sm font-semibold">
                       {formatDate(contest.startTime)} -{" "}
                       {formatDate(contest.endTime)}
@@ -187,9 +185,7 @@ const AllContests = ({ userRegisteredOnly = false }) => {
                     <Clock className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-green-500">
-                      Time
-                    </p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-green-500">Time</p>
                     <p className="text-sm font-semibold dark:text-white">
                       {formatTime(contest.startTime)} -{" "}
                       {formatTime(contest.endTime)}
