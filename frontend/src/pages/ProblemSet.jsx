@@ -16,7 +16,7 @@ function ProblemSet() {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen px-2 w-full pt-16 md:pt-20 dark:bg-neutral/10">
+    <div className="min-h-screen pb-10 px-2 w-full pt-16 md:pt-20 dark:bg-neutral/10">
       <div className="lg:w-[90%] mx-auto">
         <div className="flex md:flex-row flex-col items-center md:justify-between gap-5 w-full pb-1">
           <div className="w-[100%]">

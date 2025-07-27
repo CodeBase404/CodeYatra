@@ -23,6 +23,7 @@ import LandingPage from "./pages/LandingPage";
 import PrivateRoute from "./utils/PrivateRoute";
 import IntroAnimation from "./components/ui/IntroAnimation";
 import { fetchAllProblems } from "./features/problem/problemThunks";
+import Visualizer from "./components/components/Visualizer";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -31,6 +32,7 @@ function App() {
   const path = location.pathname;
   const theme = useSelector((state) => state.ui.theme);
   const [showIntro, setShowIntro] = useState(path === "/");
+  const [algorithm, setAlgorithm] = useState([]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -131,6 +133,14 @@ function App() {
           }
         />
         <Route path="/plans" element={<PlanPage />} />
+        <Route
+          path="/visualize-algo"
+          element={
+               <PrivateRoute>
+            <Visualizer algorithm={algorithm} setAlgorithm={setAlgorithm} />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );
