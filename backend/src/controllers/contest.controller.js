@@ -11,8 +11,8 @@ const createContest = async (req, res) => {
     const newContest = await Contest.create({
       name,
       problems,
-      startTime,
-      endTime,
+      startTime: new Date(startTime),
+      endTime: new Date(endTime),
       createdBy,
     });
 

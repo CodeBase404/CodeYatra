@@ -30,8 +30,6 @@ const AllContests = ({ userRegisteredOnly = false }) => {
   const [isDeleting, setIsDeleting] = useState(null);
   const path = location.pathname;
 
-  console.log(contests);
-  
   const handleDeleteContest = async (contestId) => {
     if (!window.confirm("Are you sure you want to delete this Contest?"))
       return;
@@ -60,19 +58,19 @@ const AllContests = ({ userRegisteredOnly = false }) => {
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
+      timeZone: "Asia/Kolkata", // 👈 force IST
       month: "short",
       day: "numeric",
       year: "numeric",
-      timeZone: "Asia/Kolkata",
     });
   };
 
   const formatTime = (dateString) => {
     return new Date(dateString).toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata", // 👈 force IST
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
-      timeZone: "Asia/Kolkata",
     });
   };
 
