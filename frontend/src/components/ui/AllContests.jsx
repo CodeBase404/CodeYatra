@@ -57,18 +57,20 @@ const AllContests = ({ userRegisteredOnly = false }) => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("en-IN", {
       month: "short",
       day: "numeric",
       year: "numeric",
+      timeZone: "Asia/Kolkata",
     });
   };
 
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString("en-US", {
+    return new Date(dateString).toLocaleTimeString("en-IN", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
+      timeZone: "Asia/Kolkata",
     });
   };
 
@@ -172,7 +174,9 @@ const AllContests = ({ userRegisteredOnly = false }) => {
                     <Calendar className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-blue-400">Date</p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-blue-400">
+                      Date
+                    </p>
                     <p className="text-sm font-semibold">
                       {formatDate(contest.startTime)} -{" "}
                       {formatDate(contest.endTime)}
@@ -185,7 +189,9 @@ const AllContests = ({ userRegisteredOnly = false }) => {
                     <Clock className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-green-500">Time</p>
+                    <p className="text-sm font-medium text-gray-500 dark:text-green-500">
+                      Time
+                    </p>
                     <p className="text-sm font-semibold dark:text-white">
                       {formatTime(contest.startTime)} -{" "}
                       {formatTime(contest.endTime)}
