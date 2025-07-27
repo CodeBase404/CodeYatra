@@ -14,7 +14,7 @@ function Home() {
   return (
     <div className="min-h-screen">
       <Hero />
-      <div  onClick={() => setShowFAQ((prev) => !prev)}  className="fixed bottom-5 flex gap-1 cursor-pointer select-none right-10 z-50 p-3 shadow shadow-black border border-black/15 dark:border-white/10 dark:bg-neutral/30 backdrop-blur-2xl  bg-white rounded-full">
+      <div  onClick={() => setShowFAQ((prev) => !prev)}  className="fixed bottom-5 flex gap-1 cursor-pointer select-none right-10 z-50 p-3 shadow shadow-black border border-black/15 dark:border-white/10 backdrop-blur-2xl bg-white rounded-full">
         <span className="absolute top-7 right-6.5 text-xs font-bold">FAQ</span>{" "}
         <MessageCircle size={50} />
       </div>
