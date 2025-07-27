@@ -103,7 +103,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 dark:from-neutral to-indigo-100 dark:to-neutral p-4">
+    <div className="h-[100vh] w-full bg-gradient-to-br from-blue-50 dark:from-neutral to-indigo-100 dark:to-neutral p-4">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 dark:from-gray-900 to-indigo-600 dark:to-gray-900 px-8 py-6">
@@ -295,7 +295,7 @@ const Profile = () => {
               {!isChangingPassword && (
                 <button
                   onClick={() => setIsChangingPassword(true)}
-                  className="inline-flex items-center space-x-2 px-4 py-2 btn btn-dash btn-error text-white rounded-lg transition-colors"
+                  className="inline-flex items-center space-x-2 px-4 py-2 btn btn-dash btn-error hover:text-white dark:text-white rounded-lg transition-colors"
                 >
                   <Lock className="w-4 h-4" />
                   <span>Change Password</span>

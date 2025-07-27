@@ -116,10 +116,10 @@ function AiInterviewer() {
   };
 
   return (
-    <div className=" pt-10 lg:pt-7 min-h-screen w-full dark:bg-neutral text-white overflow-hidden">
+    <div className="pt-15 lg:pt-7 min-h-screen w-full dark:bg-neutral text-white overflow-hidden">
       <div className="relative z-10 flex flex-col items-center justify-center gap-2 min-h-screen w-full p-4">
            <div class="absolute inset-0 -z-10 h-full w-full bg-white dark:hidden bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
-      <div className="text-2xl btn btn-dash btn-error">Let's Start Interview</div>
+      <button className="text-2xl btn btn-soft hover:text-white dark:bg-red-400 dark:text-white dark:border-none btn-error required: z-2">Let's Start Interview</button>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -132,7 +132,7 @@ function AiInterviewer() {
           </div>
 
           {/* Interviewer */}
-          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-rose-300/50 dark:bg-rose-500/10 border border-rose-500/20 dark:border-rose-500/20 rounded-2xl p-6 md:min-h-80 w-full ">
+          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-rose-800 dark:bg-rose-500/10 border border-rose-500/20 dark:border-rose-500/20 rounded-2xl p-6 md:min-h-80 w-full ">
             {isConnected && (
               <div className="absolute top-2 right-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -167,7 +167,7 @@ function AiInterviewer() {
           </div>
 
           {/* User */}
-          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-purple-300/50  dark:bg-purple-400/10 border border-black/20 dark:border-white/20 rounded-2xl p-6 md:min-h-80 w-full ">
+          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-purple-800  dark:bg-purple-400/10 border border-black/20 dark:border-white/20 rounded-2xl p-6 md:min-h-80 w-full ">
             <div className="flex justify-center mb-6">
               <motion.div
                 className={`w-32 h-32 rounded-full border flex items-center justify-center relative bg-gradient-to-r from-purple-500/40 dark:from-purple-500/10 to-purple-500/40 dark:to-purple-500/15 border-purple-500/30`}
@@ -216,7 +216,7 @@ function AiInterviewer() {
               whileTap={{ scale: 0.95 }}
               onClick={startInterview}
               disabled={connectionStatus === "connecting"}
-              className="px-8 py-3 disabled:opacity-50 btn btn-dash btn-success border border-white/50 disabled:cursor-not-allowed font-semibold hover:text-white dark:hover:bg-green-400/10 flex items-center gap-2"
+              className="px-8 py-3 disabled:opacity-50 btn btn-soft btn-success border border-black/10 dark:border-white/50 disabled:cursor-not-allowed font-semibold hover:text-white dark:hover:bg-green-400/10 flex items-center gap-2"
             >
               <Play className="w-5 h-5" />
               {connectionStatus === "connecting"
