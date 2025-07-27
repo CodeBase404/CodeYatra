@@ -30,6 +30,9 @@ const AllContests = ({ userRegisteredOnly = false }) => {
   const [isDeleting, setIsDeleting] = useState(null);
   const path = location.pathname;
 
+  console.log(contests);
+  
+
   const handleDeleteContest = async (contestId) => {
     if (!window.confirm("Are you sure you want to delete this Contest?"))
       return;
