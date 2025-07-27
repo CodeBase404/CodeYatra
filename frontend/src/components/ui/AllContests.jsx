@@ -57,8 +57,7 @@ const AllContests = ({ userRegisteredOnly = false }) => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      timeZone: "Asia/Kolkata", // 👈 force IST
+    return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -66,11 +65,10 @@ const AllContests = ({ userRegisteredOnly = false }) => {
   };
 
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString("en-IN", {
-      timeZone: "Asia/Kolkata", // 👈 force IST
+    return new Date(dateString).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
-      hour12: true,
+      hour: true,
     });
   };
 
