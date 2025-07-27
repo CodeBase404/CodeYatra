@@ -127,23 +127,11 @@ function TimerClock({
     return formatTime(time);
   };
 
-  const getProgress = () => {
-    if (mode === "timer") {
-      const totalSeconds =
-        timerDuration.hours * 3600 +
-        timerDuration.minutes * 60 +
-        timerDuration.seconds;
-      return totalSeconds > 0
-        ? ((totalSeconds - time) / totalSeconds) * 100
-        : 0;
-    }
-    return 0;
-  };
 
   return (
     <div className=" w-full flex items-center justify-center p-4">
       {show && (
-        <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl p-6 shadow-2xl space-y-6">
+        <div className="bg-purple-900 dark:bg-black backdrop-blur-3xl border border-white/20 rounded-2xl p-6 shadow-2xl space-y-6">
           {/* Mode Selection */}
           <div className="flex w-full justify-between gap-3">
             <button

@@ -14,7 +14,9 @@ import {
   TvMinimalPlay,
   BotMessageSquare,
   History,
-  BookCheck
+  BookCheck,
+  Check,
+  Copy,
 } from "lucide-react";
 import Editorial from "./Editorial";
 import Description from "./Description";
@@ -27,11 +29,14 @@ import { useRef, useState } from "react";
 import FullScreen from "../ui/FullScreen";
 import dayjs from "dayjs";
 import { NavLink } from "react-router";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 function Left({ problemId }) {
   const { selectedTab, resultTab } = useSelector((state) => state.ui);
   const { solutionSubmit, problem } = useSelector((state) => state.problems);
   const { user } = useSelector((state) => state.auth);
+  const [isCodeCopied, setIsCodeCopied] = useState(false);
 
   const isPremiumActive =
     user?.premiumPlan?.isActive &&
@@ -45,38 +50,37 @@ function Left({ problemId }) {
     dispatch(setSelectedTab(tabName));
   };
 
-  const getStatusConfig = (status) => {
+   const getStatusConfig = (status) => {
     const configs = {
       accepted: {
         icon: CheckCircle,
         color: "text-green-600",
-        bgColor: "bg-green-50",
-        borderColor: "border-green-200",
+        bgColor: "bg-green-50 dark:bg-green-600/10",
+        borderColor: "border-green-200 dark:border-green-500/5",
         label: "Accepted",
       },
       "wrong answer": {
         icon: XCircle,
-        color: "text-red-600",
-        bgColor: "bg-red-50",
-        borderColor: "border-red-200",
+        color: "text-red-600 dark:text-red-500/90",
+        bgColor: "bg-red-50 dark:bg-red-500/10",
+        borderColor: "border-red-200 dark:border-red-400/8",
         label: "Wrong Answer",
       },
       pending: {
         icon: Clock,
         color: "text-orange-600",
-        bgColor: "bg-orange-50",
-        borderColor: "border-orange-200",
+        bgColor: "bg-orange-50 dark:bg-orange-200/10",
+        borderColor: "border-orange-200 dark:border-orange-300/8",
         label: "Pending",
       },
       error: {
         icon: XCircle,
         color: "text-purple-600",
-        bgColor: "bg-purple-50",
-        borderColor: "border-purple-200",
+        bgColor: "bg-purple-50 dark:bg-purple-400/10",
+        borderColor: "border-purple-200 dark:border-purple-400/8",
         label: "Error",
       },
     };
-
     return configs[status];
   };
 
@@ -117,25 +121,25 @@ function Left({ problemId }) {
         <Tabdiv
           active={selectedTab === "editorial"}
           onClick={() => handleTabChange("editorial")}
-          icon={<TvMinimalPlay  size={16} />}
+          icon={<TvMinimalPlay size={16} />}
           label="Editorial"
         />
         <Tabdiv
           active={selectedTab === "solutions"}
           onClick={() => handleTabChange("solutions")}
-           icon={<BookCheck   size={16} />}
+          icon={<BookCheck size={16} />}
           label="Solutions"
         />
         <Tabdiv
           active={selectedTab === "submissions"}
           onClick={() => handleTabChange("submissions")}
-           icon={<History  size={16} />}
+          icon={<History size={16} />}
           label="Submissions"
         />
         <Tabdiv
           active={selectedTab === "AI"}
           onClick={() => handleTabChange("AI")}
-           icon={<BotMessageSquare  size={16} />}
+          icon={<BotMessageSquare size={16} />}
           label="AI"
         />
         {resultTab && (
@@ -151,7 +155,7 @@ function Left({ problemId }) {
         <FullScreen eleRef={leftRef} />
       </div>
 
-      <div className="flex-1 h-full overflow-y-auto scrollbar-hide bg-white dark:bg-neutral-800/70">
+      <div className="flex-1 h-full overflow-y-auto scrollbar-hide bg-white dark:bg-neutral-800/30">
         {selectedTab === "description" && <Description />}
 
         {selectedTab === "editorial" && (
@@ -227,10 +231,10 @@ function Left({ problemId }) {
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Header */}
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="bg-white dark:bg-black/20 shadow-sm border border-gray-200 dark:border-white/15 p-6">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <span className="text-sm text-gray-500 flex items-center">
+                  <span className="text-sm text-gray-500 dark:text-gray-300 flex items-center">
                     <Calendar className="w-4 h-4 mr-1" />
                     {formatDate(solutionSubmit?.createdAt)}
                   </span>
@@ -261,8 +265,8 @@ function Left({ problemId }) {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <div className="bg-white dark:dark:bg-black/10 shadow-sm border border-gray-200 dark:border-blue-300/20 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-blue-400 mb-4 flex items-center">
                 <Zap className="w-5 h-5 mr-2 text-blue-600" />
                 Performance Metrics
               </h2>
@@ -276,7 +280,7 @@ function Left({ problemId }) {
                       RUNTIME
                     </span>
                   </div>
-                  <p className="text-2xl font-bold text-blue-900">
+                  <p className="text-xl font-bold text-blue-900">
                     {solutionSubmit?.runtime?.toFixed(0)}ms
                   </p>
                   <p className="text-sm text-blue-600 mt-1">Execution time</p>
@@ -290,7 +294,7 @@ function Left({ problemId }) {
                       MEMORY
                     </span>
                   </div>
-                  <p className="text-2xl font-bold text-purple-900">
+                  <p className="text-xl font-bold text-purple-900">
                     {formatMemory(solutionSubmit?.memory)}
                   </p>
                   <p className="text-sm text-purple-600 mt-1">Memory usage</p>
@@ -304,7 +308,7 @@ function Left({ problemId }) {
                       TESTS
                     </span>
                   </div>
-                  <p className="text-2xl font-bold text-green-900">
+                  <p className="text-xl font-bold text-green-900">
                     {solutionSubmit?.passedTestCases}/
                     {solutionSubmit?.totalTestCases}
                   </p>
@@ -329,9 +333,8 @@ function Left({ problemId }) {
                       LANGUAGE
                     </span>
                   </div>
-                  <p className="text-2xl font-bold text-orange-900">
-                    {solutionSubmit?.language?.charAt(0)?.toUpperCase() +
-                      solutionSubmit?.language?.slice(1)}
+                  <p className="text-xl font-bold text-orange-900 capitalize">
+                    {solutionSubmit?.language}
                   </p>
                   <p className="text-sm text-orange-600 mt-1">
                     Programming language
@@ -341,17 +344,16 @@ function Left({ problemId }) {
             </div>
 
             {/* Code Display */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+            <div className=" shadow-sm border border-gray-200 dark:border-yellow-200/15 overflow-hidden">
+              <div className="bg-gradient-to-r from-gray-50 dark:from-white/5  to-gray-100 dark:to-white/5 px-6 py-4 border-b border-gray-200 dark:border-white/10">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-                    <Code className="w-5 h-5 mr-2 text-gray-600" />
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-green-300 flex items-center">
+                    <Code className="w-5 h-5 mr-2 text-gray-600 dark:text-green-200" />
                     Source Code
                   </h2>
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-gray-600 bg-gray-200 px-3 py-1 rounded-full">
-                      {solutionSubmit?.language?.charAt(0)?.toUpperCase() +
-                        solutionSubmit?.language?.slice(1)}
+                    <span className="text-sm font-medium text-gray-600 bg-gray-200 dark:bg-white/10 dark:text-gray-300 px-3 py-1 rounded-full capitalize">
+                      {solutionSubmit?.language}
                     </span>
                     <div className="flex space-x-1">
                       <div className="w-3 h-3 bg-red-400 rounded-full"></div>
@@ -361,28 +363,52 @@ function Left({ problemId }) {
                   </div>
                 </div>
               </div>
-
-              <div className="bg-gray-900 relative">
-                {/* Line numbers and code */}
-                <div className="flex">
-                  <div className="bg-gray-800 px-4 py-4 border-r border-gray-700 select-none">
-                    {solutionSubmit?.code?.split("\n")?.map((_, index) => (
-                      <div
-                        key={index}
-                        className="text-gray-400 text-sm font-mono leading-6"
-                      >
-                        {index + 1}
-                      </div>
-                    ))}
+              <div className="bg-gray-900 dark:bg-white/10 relative">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(solutionSubmit?.code);
+                    setIsCodeCopied(true);
+                    setTimeout(() => setIsCodeCopied(false), 2000);
+                  }}
+                  className="absolute right-2 top-1.5 flex flex-row items-center justify-center w-10 gap-2 px-1 py-2 bg-rose-400/30 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+                >
+                  {isCodeCopied ? (
+                    <>
+                      <Check className="w-4 h-4 text-green-500" />
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4 text-white" />
+                    </>
+                  )}
+                </button>
+                  {/* Line numbers and code */}
+                  <div className="flex">
+                    <div className="bg-gray-800 px-4 py-4 border-r border-gray-700 select-none">
+                      {solutionSubmit?.code?.split("\n")?.map((_, index) => (
+                        <div
+                          key={index}
+                          className="text-gray-400 text-sm font-mono leading-6"
+                        >
+                          {index + 1}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex-1 overflow-x-auto">
+                    <SyntaxHighlighter
+                      language={solutionSubmit?.language}
+                      style={coldarkDark}
+                      customStyle={{
+                        margin: 0,
+                        padding: "2rem",
+                        fontSize: "16px",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                     {solutionSubmit?.code}
+                    </SyntaxHighlighter>
                   </div>
-                  <div className="flex-1 overflow-x-auto">
-                    <pre className="p-4 text-sm font-mono leading-6">
-                      <code className="text-gray-100 whitespace-pre">
-                        {solutionSubmit?.code}
-                      </code>
-                    </pre>
                   </div>
-                </div>
               </div>
             </div>
           </div>
@@ -392,14 +418,7 @@ function Left({ problemId }) {
   );
 }
 
-const Tabdiv = ({
-  active,
-  onClick,
-  icon,
-  label,
-  closable,
-  onClose,
-}) => {
+const Tabdiv = ({ active, onClick, icon, label, closable, onClose }) => {
   return (
     <div
       onClick={onClick}

@@ -27,9 +27,9 @@ function Solutions() {
     );
   }
   return (
-    <div className="bg-white dark:bg-neutral-900/50 px-1 pb-1">
+    <div className="bg-white dark:bg-neutral-900/50 pb-1">
       <div className="flex items-center gap-3 px-2 py-4 ">
-        <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+        <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
           <Code2 className="w-6 h-6 text-white" />
         </div>
         <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -42,7 +42,7 @@ function Solutions() {
       {problem?.referenceSolution?.map((p, index) => (
         <div
           key={index}
-          className="relative mb-6 border border-gray-800 rounded-xl overflow-hidden"
+          className="relative mb-2 border border-gray-800 overflow-hidden"
         >
           <div className="flex items-center justify-between px-8 py-4 bg-gray-900 border-t border-gray-800">
             <div className="flex items-center gap-3">

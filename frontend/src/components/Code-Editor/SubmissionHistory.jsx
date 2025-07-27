@@ -363,7 +363,7 @@ function SubmissionHistory() {
                 </div>
 
                 {/* Language */}
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200 ">
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200">
                   <div className="flex items-center justify-between mb-2">
                     <Code className="w-5 h-5 text-orange-600" />
                     <span className="text-xs font-medium text-orange-700 bg-orange-200 px-2 py-1 rounded-full">

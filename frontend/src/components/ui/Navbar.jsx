@@ -127,13 +127,13 @@ function Navbar() {
             <div className="flex gap-2">
               <ChevronLeft
                 onClick={goToPrev}
-                className={`hover:bg-black/20 dark:hover:bg-gray-500 rounded-md cursor-pointer ${
+                className={`hover:bg-black/10 hover:text-gray-700 dark:hover:bg-gray-500 rounded-md cursor-pointer ${
                   currentIndex <= 0 ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               />
               <ChevronRight
                 onClick={goToNext}
-                className={` hover:bg-black/20 dark:hover:bg-gray-500 rounded-md cursor-pointer ${
+                className={`hover:bg-black/10 hover:text-gray-700 dark:hover:bg-gray-500 rounded-md cursor-pointer ${
                   currentIndex >= problems.length - 1
                     ? "opacity-50 cursor-not-allowed"
                     : ""
@@ -159,7 +159,7 @@ function Navbar() {
         {path.startsWith("/problems/") && (
           <div
             onClick={() => setShow((prev) => !prev)}
-            className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg px-2 p-1 cursor-pointer hover:bg-white/15 transition-all duration-300 shadow-2xl "
+            className="dark:bg-white/20 backdrop-blur-lg border border-white/20 rounded-lg px-2 p-1 cursor-pointer hover:bg-white/15 transition-all duration-300 shadow-2xl "
           >
             <div className="flex items-center justify-center gap-1 text-white">
               {time > 0 && (
@@ -178,11 +178,11 @@ function Navbar() {
                 </div>
               )}
               {time > 0 && getDisplayTime()}
-              <div className="p-1 rounded-md hover:bg-white/10">
+              <div className=" rounded-md text-black dark:text-white cursor-pointer hover:bg-white/10">
                 {time > 0 ? (
                   <RefreshCw className="w-4 h-4" />
                 ) : (
-                  <Timer className="w-4 h-4" />
+                  <Timer className="w-5.5 h-5.5" />
                 )}
               </div>
             </div>
@@ -202,7 +202,7 @@ function Navbar() {
             setShow={setShow}
           />
         </div>
-        <button onClick={() => dispatch(toggleTheme())}>
+        <button className="cursor-pointer" onClick={() => dispatch(toggleTheme())}>
           {theme === "dark" ? <Moon /> : <Sun />}
         </button>
 
