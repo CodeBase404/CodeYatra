@@ -2,21 +2,34 @@ const Contest = require("../models/contest.model");
 const {
   getLeaderboardForContest,
 } = require("../utils/getLeaderboardForContest");
+const moment = require("moment-timezone");
 
 const createContest = async (req, res) => {
   try {
     const { name, problems, startTime, endTime } = req.body;
     const createdBy = req.user._id;
 
+    // Convert incoming times to UTC
+    const startTimeUTC = moment(startTime).utc().toDate();
+    const endTimeUTC = moment(endTime).utc().toDate();
+
     const newContest = await Contest.create({
       name,
       problems,
-      startTime,
-      endTime,
+      startTime: startTimeUTC,
+      endTime: endTimeUTC,
       createdBy,
     });
 
-    res.status(201).json({ message: "Contest created", contest: newContest });
+    // Send back UTC times or convert to a specific timezone if needed
+    res.status(201).json({
+      message: "Contest created",
+      contest: {
+        ...newContest._doc,
+        startTime: newContest.startTime,
+        endTime: newContest.endTime,
+      },
+    });
   } catch (err) {
     console.error("Create Contest Error:", err);
     res.status(500).json({ message: "Failed to create contest" });
@@ -131,7 +144,6 @@ const deregisterContest = async (req, res) => {
   res.status(200).json({ message: "Deregistered successfully" });
 };
 
-
 const getContestLeaderboard = async (req, res) => {
   const { contestId } = req.params;
 
@@ -154,5 +166,5 @@ module.exports = {
   getContestProblems,
   deleteContest,
   registerUser,
-  deregisterContest
+  deregisterContest,
 };

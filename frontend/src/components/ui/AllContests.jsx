@@ -67,14 +67,13 @@ const AllContests = ({ userRegisteredOnly = false }) => {
     });
   };
 
-const formatISTTime = (utcString) => {
-  return new Date(utcString).toLocaleTimeString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
+  const formatTime = (dateString) => {
+    return new Date(dateString).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -191,7 +190,8 @@ const formatISTTime = (utcString) => {
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-green-500">Time</p>
                     <p className="text-sm font-semibold dark:text-white">
-                      {formatISTTime(contest.startTime)} - {formatISTTime(contest.endTime)} 
+                      {formatTime(contest.startTime)} -{" "}
+                      {formatTime(contest.endTime)}
                     </p>
                   </div>
                 </div>

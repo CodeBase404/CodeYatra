@@ -93,6 +93,8 @@ const ContestForm = () => {
       const contestDetails = {
         ...data,
         problems: selectedProblemIds,
+      startTime: new Date(data.startTime).toISOString(),
+      endTime: new Date(data.endTime).toISOString(),
       };
 
       const res = await axiosClient.post("/contest/create", contestDetails);
