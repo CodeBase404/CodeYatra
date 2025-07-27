@@ -14,9 +14,7 @@ import {
 
 export const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const {problem} = useSelector(state=>state.problems)
-  console.log(problem);
-  
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setIsVisible(true);
@@ -49,21 +47,31 @@ export const Hero = () => {
           </h1>
 
           <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Join thousands of coders practicing coding problems, competing
-            in contests, and preparing for technical interviews with our
-            AI-powered platform.
+            Join thousands of coders practicing coding problems, competing in
+            contests, and preparing for technical interviews with our AI-powered
+            platform.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <NavLink to="/problems/683db5aed3fc98ddef72626e"  className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg text-lg hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl">
+            <NavLink
+              to={`${
+                isAuthenticated
+                  ? "/problems/683db5aed3fc98ddef72626e"
+                  : "/login"
+              }`}
+              className="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg text-lg hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
               <Play className="inline-block w-5 h-5 mr-2" />
-              Start Solving
+              {isAuthenticated ?"Start Solving":"Login to Start Solving"}
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-lg transition-opacity duration-300"></div>
             </NavLink>
 
-            <NavLink to="/contest" className="group px-8 py-4 bg-transparent border-2 border-blue-500 text-blue-400 font-semibold rounded-lg text-lg hover:bg-blue-500 hover:text-white transform transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
+            <NavLink
+              to={`${isAuthenticated ? "/contest" : "/login"}`}
+              className="group px-8 py-4 bg-transparent border-2 border-blue-500 text-blue-400 font-semibold rounded-lg text-lg hover:bg-blue-500 hover:text-white transform transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            >
               <Trophy className="inline-block w-5 h-5 mr-2" />
-              Join Contest
+              {isAuthenticated ?"Join Contest":"Login to Join Contest"}
             </NavLink>
           </div>
 

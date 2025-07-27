@@ -78,12 +78,6 @@ const Leaderboard = () => {
                 </div>
               ))}
             </div>
-            
-            <div className="mt-8 text-center">
-              <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg hover:scale-105 transform transition-all duration-300 shadow-lg">
-                View Full Leaderboard
-              </button>
-            </div>
           </div>
         </div>
       </div>

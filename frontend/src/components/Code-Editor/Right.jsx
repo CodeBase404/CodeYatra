@@ -31,6 +31,7 @@ import toast from "react-hot-toast";
 import { markDailyChallengeSolved } from "../../features/dailyChallenge/dailyChallengeThunk";
 import { NavLink, useLocation } from "react-router";
 import { isSoundEnabled, playClapSound, toggleSound } from "../../utils/sound";
+import LiveContestTimer from "../ui/LiveContestTimer";
 
 const languages = [
   { value: "java", label: "Java", category: "popular" },
@@ -232,6 +233,7 @@ function Right({ problemId, contestId }) {
           <span className="text-black dark:text-white font-semibold">Code</span>
         </div>
         <div className="flex items-center space-x-2 pr-2">
+          <LiveContestTimer problemId={problemId} contestId={contestId}/>
           <button
             onClick={handleToggleSound}
             className="flex-1 border rounded-lg px-3 py-1.5 flex items-center justify-center gap-1 text-sm font-medium bg-gradient-to-r from-purple-600/30 dark:from-purple-500/20 to-purple-500 dark:to-purple-500/20 border-purple-300 dark:border-purple-400/30 text-purple-50 dark:text-purple-100 hover:from-purple-500/40 hover:to-purple-800 dark:hover:from-purple-500/30 dark:hover:to-purple-500/30 transition-all duration-300"

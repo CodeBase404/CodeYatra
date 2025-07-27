@@ -208,8 +208,8 @@ function ChatAi({ problemId }) {
   };
 
   return (
-    <div className="flex flex-col h-screen max-h-[85vh]">
-      <div className="flex-1 overflow-y-auto p-2 space-y-4">
+    <div className="flex flex-col h-screen max-h-[85vh] w-full">
+      <div className="flex-1 overflow-y-auto p-2 space-y-4 scrollbar-hide">
         {messages.length > 0 ? (
           messages.map((msg, index) => (
             <div
