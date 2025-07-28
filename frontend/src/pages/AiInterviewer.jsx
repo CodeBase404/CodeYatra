@@ -118,8 +118,9 @@ function AiInterviewer() {
   return (
     <div className="pt-15 lg:pt-7 min-h-screen w-full dark:bg-neutral text-white overflow-hidden">
       <div className="relative z-10 flex flex-col items-center justify-center gap-2 min-h-screen w-full p-4">
-           <div class="absolute inset-0 -z-10 h-full w-full bg-white dark:hidden bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
-      <button className="text-2xl btn btn-soft hover:text-white dark:bg-red-400 dark:text-white dark:border-none btn-error required: z-2">Let's Start Interview</button>
+          <div class="absolute h-full w-full dark:hidden block bg-white"><div class="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div></div>
+              <div class="absolute overflow-hidden  h-full w-full hidden dark:block dark:bg-black"><div class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div><div class="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div></div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -132,7 +133,7 @@ function AiInterviewer() {
           </div>
 
           {/* Interviewer */}
-          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-rose-800 dark:bg-rose-500/10 border border-rose-500/20 dark:border-rose-500/20 rounded-2xl p-6 md:min-h-80 w-full ">
+          <div className="relative flex flex-col items-center justify-center shadow shadow-black dark:shadow-white backdrop-blur-xl bg-rose-800 dark:bg-rose-500/10 border border-rose-500/20 dark:border-rose-500/20 rounded-2xl p-6 md:min-h-80 w-full ">
             {isConnected && (
               <div className="absolute top-2 right-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -167,7 +168,7 @@ function AiInterviewer() {
           </div>
 
           {/* User */}
-          <div className="relative flex flex-col items-center justify-center backdrop-blur-xl bg-purple-800  dark:bg-purple-400/10 border border-black/20 dark:border-white/20 rounded-2xl p-6 md:min-h-80 w-full ">
+          <div className="relative flex flex-col items-center justify-center shadow shadow-black dark:shadow-white backdrop-blur-xl bg-purple-800  dark:bg-purple-400/10 border border-black/20 dark:border-white/20 rounded-2xl p-6 md:min-h-80 w-full ">
             <div className="flex justify-center mb-6">
               <motion.div
                 className={`w-32 h-32 rounded-full border flex items-center justify-center relative bg-gradient-to-r from-purple-500/40 dark:from-purple-500/10 to-purple-500/40 dark:to-purple-500/15 border-purple-500/30`}
@@ -192,7 +193,7 @@ function AiInterviewer() {
         </motion.div>
 
         {/* Messages */}
-        <div className="hidden md:flex w-full max-w-4xl backdrop-blur-3xl h-64 overflow-y-auto flex-col mt-2 dark:bg-white/10 p-4 rounded-xl border border-black/20 dark:border-white/20 dark:shadow-inner">
+        <div className="hidden md:flex w-full max-w-4xl shadow shadow-black dark:shadow-white/20 backdrop-blur-3xl h-64 overflow-y-auto flex-col mt-2 dark:bg-white/10 p-4 rounded-xl border border-black/20 dark:border-white/20 dark:shadow-inner">
           {messages.map((msg) => (
             <div
               key={msg.id}
