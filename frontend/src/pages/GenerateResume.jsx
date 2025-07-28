@@ -37,12 +37,20 @@ const GenerateResume = () => {
     achievements: [],
   });
 
-  const { register, handleSubmit, control, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm({
     defaultValues: data,
   });
 
-  const [currentStep, setCurrentStep] = useState("input"); // input, form, preview
-  const [description, setDescription] = useState("");
+  const description = watch("description");
+
+  const [currentStep, setCurrentStep] = useState("input");
   const [loading, setLoading] = useState(false);
 
   // Field arrays for form
@@ -82,17 +90,17 @@ const GenerateResume = () => {
 
       const jsonString =
         responseData.data.response.candidates[0].content.parts[0].text;
-        console.log("jsonString",jsonString);
-        
+      console.log("jsonString", jsonString);
+
       const cleanText = jsonString
         .replace(/```json\n?/, "")
         .replace(/```$/, "");
-        console.log("cleanText",cleanText);
-        
-        const parsedData = JSON.parse(cleanText);
-        console.log("parsedData",parsedData);
+      console.log("cleanText", cleanText);
 
-      reset(parsedData); 
+      const parsedData = JSON.parse(cleanText);
+      console.log("parsedData", parsedData);
+
+      reset(parsedData);
       setData(parsedData);
       setCurrentStep("form");
       toast.success("Resume generated successfully!", {
@@ -263,7 +271,6 @@ const GenerateResume = () => {
       initial="initial"
       animate="in"
       exit="out"
-      variants={pageVariants}
       className="min-h-screen flex items-center justify-center p-4"
     >
       <div className="card w-full max-w-2xl bg-base-100 shadow-2xl">
@@ -279,16 +286,18 @@ const GenerateResume = () => {
           </div>
 
           <textarea
+            {...register("description", {
+              required: "Description is required",
+            })}
             disabled={loading}
             className="textarea textarea-bordered textarea-primary w-full h-48 mb-6 resize-none text-base"
             placeholder="I am a software developer with 5 years of experience in React and Node.js. I have worked at several startups and built e-commerce platforms. I have a degree in Computer Science from Stanford University..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            autoFocus
           />
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              disabled={loading || !description.trim()}
+              disabled={loading}
               onClick={handleGenerate}
               className="btn btn-primary btn-lg gap-2 min-w-48"
             >
@@ -306,7 +315,7 @@ const GenerateResume = () => {
             </button>
 
             <button
-              onClick={() => setDescription("")}
+              onClick={() => reset({ description: "" })}
               className="btn btn-ghost btn-lg gap-2"
               disabled={loading}
             >
