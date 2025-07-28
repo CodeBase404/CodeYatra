@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import {
   Mail,
   Shield,
@@ -15,9 +15,13 @@ import {
 import Modal from "./Modal";
 import ProfileUpload from "./ProfileUpload";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import axiosClient from "../../utils/axiosClient";
-import { deleteAccount, fetchUserProfile, logoutUser } from "../../features/auth/authThunks";
+import {
+  deleteAccount,
+  fetchUserProfile,
+  logoutUser,
+} from "../../features/auth/authThunks";
 import AccountVerification from "./AccountVerification";
 import { setShowCreateModal } from "../../features/ui/uiSlice";
 import DeleteMyAccount from "./DeleteMyAccount";
@@ -40,7 +44,18 @@ const Profile = () => {
   } = useForm({
     defaultValues: {
       firstName: user?.firstName,
+      lastName: user?.lastName,
+      gender: user?.gender,
+      age: user?.age,
+      location: user?.location,
+      birthday: user?.birthday?.substring(0, 10), // format for input[type=date]
+      summary: user?.summary,
+      github: user?.github,
+      linkedin: user?.linkedin,
       role: user?.role,
+      skills: user?.skills || [],
+      experience: user?.experience || [],
+      education: user?.education || [],
     },
   });
 
@@ -49,8 +64,25 @@ const Profile = () => {
     handleSubmit: handlePasswordSubmit,
     formState: { errors: passwordErrors },
     reset: resetPassword,
+    control,
     watch,
   } = useForm();
+  const {
+    fields: experienceFields,
+    append: addExp,
+    remove: removeExp,
+  } = useFieldArray({
+    control,
+    name: "experience",
+  });
+  const {
+    fields: eduFields,
+    append: addEdu,
+    remove: removeEdu,
+  } = useFieldArray({
+    control,
+    name: "education",
+  });
 
   const newPassword = watch("newPassword");
 
@@ -58,6 +90,16 @@ const Profile = () => {
     try {
       const res = await axiosClient.put("/user/update-profile", {
         firstName: data.firstName,
+        lastName: data.lastName,
+        gender: data.gender,
+        age: data.age,
+        location: data.location,
+        birthday: data.birthday,
+        summary: data.summary,
+        skills: data.skills.split(",").map((s) => s.trim()),
+        github: data.github,
+        linkedin: data.linkedin,
+        role: data.role,
       });
       dispatch(fetchUserProfile());
       alert(res.data.message || "Profile updated successfully");
@@ -178,6 +220,16 @@ const Profile = () => {
                       </p>
                     )}
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Last Name
+                    </label>
+                    <input
+                      {...registerProfile("lastName")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
                   {user?.role === "admin" && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -199,6 +251,206 @@ const Profile = () => {
                       )}
                     </div>
                   )}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Gender
+                    </label>
+                    <select
+                      {...registerProfile("gender")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="other">Other</option>
+                      <option value="prefer not to say">
+                        Prefer not to say
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Age
+                    </label>
+                    <input
+                      type="number"
+                      {...registerProfile("age")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="Enter your age"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Location
+                    </label>
+                    <input
+                      {...registerProfile("location")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="Enter your location"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Birthday
+                    </label>
+                    <input
+                      type="date"
+                      {...registerProfile("birthday")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Summary
+                    </label>
+                    <textarea
+                      {...registerProfile("summary")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      rows={4}
+                      placeholder="Write a short summary about yourself"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Skills (comma-separated)
+                    </label>
+                    <input
+                      {...registerProfile("skills")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="e.g. JavaScript, React, MongoDB"
+                    />
+                  </div>
+
+                  <div>
+                    <h3 className="text-md font-semibold">Experience</h3>
+                    {experienceFields.map((exp, index) => (
+                      <div key={exp.id} className="border p-4 rounded-lg mb-4">
+                        <input
+                          {...registerProfile(`experience.${index}.company`)}
+                          className="w-full mb-2 p-2 border"
+                          placeholder="Company"
+                        />
+                        <input
+                          {...registerProfile(`experience.${index}.position`)}
+                          className="w-full mb-2 p-2 border"
+                          placeholder="Position"
+                        />
+                        <input
+                          type="date"
+                          {...registerProfile(`experience.${index}.startDate`)}
+                          className="w-full mb-2 p-2 border"
+                        />
+                        <input
+                          type="date"
+                          {...registerProfile(`experience.${index}.endDate`)}
+                          className="w-full mb-2 p-2 border"
+                        />
+                        <textarea
+                          {...registerProfile(
+                            `experience.${index}.description`
+                          )}
+                          className="w-full p-2 border"
+                          placeholder="Description"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeExp(index)}
+                          className="text-red-500 mt-2"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => addExp({})}
+                      className="btn btn-sm mt-2"
+                    >
+                      + Add Experience
+                    </button>
+                  </div>
+                  <div>
+                    <h3 className="text-md font-semibold">Education</h3>
+                    {eduFields.map((edu, index) => (
+                      <div key={edu.id} className="border p-4 rounded-lg mb-4">
+                        <input
+                          {...registerProfile(`education.${index}.school`)}
+                          className="w-full mb-2 p-2 border"
+                          placeholder="School"
+                        />
+                        <input
+                          {...registerProfile(`education.${index}.degree`)}
+                          className="w-full mb-2 p-2 border"
+                          placeholder="Degree"
+                        />
+                        <input
+                          {...registerProfile(
+                            `education.${index}.fieldOfStudy`
+                          )}
+                          className="w-full mb-2 p-2 border"
+                          placeholder="Field of Study"
+                        />
+                        <input
+                          type="date"
+                          {...registerProfile(`education.${index}.startDate`)}
+                          className="w-full mb-2 p-2 border"
+                        />
+                        <input
+                          type="date"
+                          {...registerProfile(`education.${index}.endDate`)}
+                          className="w-full mb-2 p-2 border"
+                        />
+                        <textarea
+                          {...registerProfile(`education.${index}.description`)}
+                          className="w-full p-2 border"
+                          placeholder="Description"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeEdu(index)}
+                          className="text-red-500 mt-2"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => addEdu({})}
+                      className="btn btn-sm mt-2"
+                    >
+                      + Add Education
+                    </button>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      GitHub
+                    </label>
+                    <input
+                      type="url"
+                      {...registerProfile("github")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      LinkedIn
+                    </label>
+                    <input
+                      type="url"
+                      {...registerProfile("linkedin")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
@@ -229,16 +481,12 @@ const Profile = () => {
                     {user?.firstName}
                   </p>
                 </div>
-                {user?.role === "admin" && (
-                  <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                      Role
-                    </label>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-white capitalize">
-                      {user?.role}
-                    </p>
-                  </div>
-                )}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Last Name</label>
+                  <p className="text-lg text-gray-800">
+                    {user?.lastName || "—"}
+                  </p>
+                </div>
                 <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
                   <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                     Email
@@ -250,6 +498,113 @@ const Profile = () => {
                     </p>
                     <span className="text-xs text-gray-500">(Immutable)</span>
                   </div>
+                </div>
+                {user?.role === "admin" && (
+                  <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                      Role
+                    </label>
+                    <p className="text-lg font-semibold text-gray-800 dark:text-white capitalize">
+                      {user?.role}
+                    </p>
+                  </div>
+                )}
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Gender</label>
+                  <p className="text-lg text-gray-800 capitalize">
+                    {user?.gender || "—"}
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Age</label>
+                  <p className="text-lg text-gray-800">{user?.age || "—"}</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Location</label>
+                  <p className="text-lg text-gray-800">
+                    {user?.location || "—"}
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Birthday</label>
+                  <p className="text-lg text-gray-800">
+                    {user?.birthday ? formatDate(user.birthday) : "—"}
+                  </p>
+                </div>
+                <div className="md:col-span-2 bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">Summary</label>
+                  <p className="text-lg text-gray-800">
+                    {user?.summary || "—"}
+                  </p>
+                </div>
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold">Skills</h2>
+                  <ul className="flex flex-wrap gap-2">
+                    {user.skills?.map((skill, idx) => (
+                      <li
+                        key={idx}
+                        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                      >
+                        {skill}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold">Experience</h3>
+                  {user?.experience?.map((exp, idx) => (
+                    <div key={idx} className="mt-2 border-b pb-2">
+                      <p className="font-medium">
+                        {exp.position} @ {exp.company}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {formatDate(exp.startDate)} -{" "}
+                        {exp.endDate ? formatDate(exp.endDate) : "Present"}
+                      </p>
+                      <p>{exp.description}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold">Education</h3>
+                  {user?.education?.map((edu, idx) => (
+                    <div key={idx} className="mt-2 border-b pb-2">
+                      <p className="font-medium">
+                        {edu.degree} in {edu.fieldOfStudy}
+                      </p>
+                      <p className="text-sm text-gray-500">{edu.school}</p>
+                      <p className="text-sm text-gray-500">
+                        {formatDate(edu.startDate)} -{" "}
+                        {edu.endDate ? formatDate(edu.endDate) : "Present"}
+                      </p>
+                      <p>{edu.description}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">GitHub</label>
+                  <a
+                    href={user?.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {user?.github || "—"}
+                  </a>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500">LinkedIn</label>
+                  <a
+                    href={user?.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    {user?.linkedin || "—"}
+                  </a>
                 </div>
               </div>
             )}
@@ -292,6 +647,12 @@ const Profile = () => {
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
                 Password & Security
               </h2>
+              <div className="flex items-center gap-3">
+                  <NavLink to="/forgot-password"
+                  className=" cursor-pointer font-semibold text-[16px] btn btn-dash btn-primary"
+                >
+                  Forgot password?
+                </NavLink>
               {!isChangingPassword && (
                 <button
                   onClick={() => setIsChangingPassword(true)}
@@ -301,6 +662,7 @@ const Profile = () => {
                   <span>Change Password</span>
                 </button>
               )}
+              </div>
             </div>
 
             {isChangingPassword ? (
@@ -308,7 +670,7 @@ const Profile = () => {
                 onSubmit={handlePasswordSubmit(onPasswordSubmit)}
                 className="space-y-6 w-[50%] mx-auto"
               >
-                <div className="grid grid-cols-1 gap-6">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Current Password
@@ -421,22 +783,21 @@ const Profile = () => {
                     )}
                   </div>
                 </div>
-
-                <div className="flex items-center space-x-4">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    <Lock className="w-4 h-4" />
-                    <span>Update Password</span>
-                  </button>
-                  <button
+                <div className="flex items-center justify-end space-x-4">
+                    <button
                     type="button"
                     onClick={handleCancelPasswordChange}
                     className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                   >
                     <X className="w-4 h-4" />
                     <span>Cancel</span>
+                  </button>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Lock className="w-4 h-4" />
+                    <span>Update Password</span>
                   </button>
                 </div>
               </form>

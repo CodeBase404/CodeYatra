@@ -155,7 +155,7 @@ function Left({ problemId }) {
         <FullScreen eleRef={leftRef} />
       </div>
 
-      <div className="flex-1 h-full overflow-y-auto scrollbar-hide bg-white dark:bg-neutral-800/30">
+      <div className="flex-1 h-full overflow-y-auto scrollbar-hide bg-white dark:bg-neutral-800/70">
         {selectedTab === "description" && <Description />}
 
         {selectedTab === "editorial" && (

@@ -163,7 +163,9 @@ const profile = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    const user = await User.findById(userId).select("-password -emailVerification -passwordReset");
+    const user = await User.findById(userId).select(
+      "-password -emailVerification -passwordReset"
+    );
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -179,13 +181,40 @@ const profile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const userId = req.user._id;
-  const { firstName } = req.body;
+  const {
+    firstName,
+    lastName,
+    gender,
+    age,
+    location,
+    birthday,
+    summary,
+    github,
+    linkedin,
+    role,
+    skills,
+    experience,
+    education,
+  } = req.body;
 
   try {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.gender = gender || user.gender;
+    user.age = age || user.age;
+    user.location = location || user.location;
+    user.birthday = birthday || user.birthday;
+    user.summary = summary || user.summary;
+    user.github = github || user.github;
+    user.linkedin = linkedin || user.linkedin;
+    user.role = role || user.role;
+
+    if (Array.isArray(skills)) user.skills = skills;
+    if (Array.isArray(experience)) user.experience = experience;
+    if (Array.isArray(education)) user.education = education;
 
     await user.save();
 
@@ -469,10 +498,11 @@ const deleteAccount = async (req, res) => {
     res.status(200).json({ message: "Account deleted successfully." });
   } catch (err) {
     console.error("Error deleting account:", err);
-    res.status(500).json({ message: "Server error. Could not delete account." });
+    res
+      .status(500)
+      .json({ message: "Server error. Could not delete account." });
   }
 };
-
 
 module.exports = {
   userRegister,

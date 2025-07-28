@@ -10,7 +10,10 @@ import {
 } from "lucide-react";
 
 const getCloudinaryUrlWithResolution = (baseUrl, width, height) => {
-  return baseUrl?.replace("/upload/", `/upload/w_${width},h_${height},c_limit/`);
+  return baseUrl?.replace(
+    "/upload/",
+    `/upload/w_${width},h_${height},c_limit/`
+  );
 };
 
 const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
@@ -24,6 +27,7 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
   const [showSlider, setShowSlider] = useState(false);
   const wrapperRef = useRef(null);
   const [playbackRate, setPlaybackRate] = useState(1);
+  const [hasStarted, setHasStarted] = useState(false);
   const [quality, setQuality] = useState("720p");
   const resolutions = {
     "360p": { width: 640, height: 360 },
@@ -93,6 +97,7 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
 
   const togglePlayPause = () => {
     if (videoRef.current) {
+      if (!hasStarted) setHasStarted(true);
       if (isPlaying) {
         videoRef.current.pause();
         setIsEnded(false);
@@ -134,6 +139,28 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
       setIsEnded(false);
       videoRef.current.play();
       setIsPlaying(true);
+      setHasStarted(true);
+    }
+  };
+
+  const handleQualityChange = (e) => {
+    const newQuality = e.target.value;
+    const video = videoRef.current;
+
+    if (video) {
+      const wasPlaying = !video.paused;
+      const current = video.currentTime;
+
+      setQuality(newQuality);
+
+      setTimeout(() => {
+        if (video) {
+          video.currentTime = current;
+          if (wasPlaying) {
+            video.play();
+          }
+        }
+      }, 100);
     }
   };
 
@@ -156,13 +183,15 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Video Element */}
-      <video
-        ref={videoRef}
-        src={transformedUrl}
-        poster={thumbnailUrl}
-        onClick={togglePlayPause}
-        className="w-full h-full object-contain backdrop-blur-3xl cursor-pointer"
-      />
+      <div className="w-full h-full mx-auto aspect-video relative">
+        <video
+          ref={videoRef}
+          src={transformedUrl}
+          {...(!hasStarted && { poster: thumbnailUrl })}
+          onClick={togglePlayPause}
+          className="w-full h-full  object-contain backdrop-blur-3xl cursor-pointer"
+        />
+      </div>
 
       {/* Video Controls Overlay */}
       <div
@@ -207,7 +236,6 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
         </div>
 
         <div className="flex justify-between px-2 ">
-
           <div className="flex items-center gap-2">
             <div className="flex gap-2">
               <button
@@ -231,7 +259,11 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
                   className="btn btn-circle btn-primary w-9 h-9"
                   aria-label={isPlaying ? "Pause" : "Play"}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4"/> : <Play className="w-4 h-4"/>}
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4" />
+                  ) : (
+                    <Play className="w-4 h-4" />
+                  )}
                 </button>
               )}
 
@@ -293,7 +325,7 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
             <select
               className="h-9 text-black bg-white/10 backdrop-blur-sm rounded px-2 py-1 text-sm"
               value={quality}
-              onChange={(e) => setQuality(e.target.value)}
+              onChange={handleQualityChange}
             >
               <option value="360p">360p</option>
               <option value="720p">720p</option>
@@ -308,7 +340,6 @@ const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
               <Maximize className="w-4 h-4 text-white group-hover:scale-110 transition-transform duration-200" />
             </button>
           </div>
-          
         </div>
       </div>
     </div>

@@ -158,7 +158,7 @@ function Navbar() {
         </div>
       </div>
       <div className="flex items-center gap-4 md:gap-2 lg:gap-4">
-        <BackgroundSoundPlayer/>
+        <BackgroundSoundPlayer />
         {path.startsWith("/problems/") && (
           <div
             onClick={() => setShow((prev) => !prev)}
@@ -205,8 +205,11 @@ function Navbar() {
             setShow={setShow}
           />
         </div>
-        <button className="cursor-pointer" onClick={() => dispatch(toggleTheme())}>
-          {theme === "dark" ? <Moon /> : <Sun />}
+        <button
+          className="cursor-pointer"
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "dark" ? <Sun /> : <Moon />}
         </button>
 
         {isAuthenticated && (
@@ -281,7 +284,9 @@ function Navbar() {
           <button
             onClick={handleLogout}
             disabled={loading}
-            className={`btn btn-dash btn-error hover:text-white ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`btn btn-dash btn-error hover:text-white ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             {loading ? "Logging out..." : "Logout"}
           </button>

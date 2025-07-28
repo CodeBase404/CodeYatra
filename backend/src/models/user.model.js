@@ -44,6 +44,23 @@ const otpSchema = new Schema({
   },
 });
 
+const experienceSchema = new mongoose.Schema({
+  company: String,
+  position: String,
+  startDate: Date,
+  endDate: Date,
+  description: String,
+});
+
+const educationSchema = new mongoose.Schema({
+  school: String,
+  degree: String,
+  fieldOfStudy: String,
+  startDate: Date,
+  endDate: Date,
+  description: String,
+});
+
 const userSchema = new Schema(
   {
     firstName: {
@@ -56,11 +73,6 @@ const userSchema = new Schema(
       type: String,
       minLength: 2,
       maxLength: 20,
-    },
-    age: {
-      type: Number,
-      min: 6,
-      max: 80,
     },
     emailId: {
       type: String,
@@ -75,15 +87,33 @@ const userSchema = new Schema(
       required: true,
       trim: true,
     },
+    gender: {
+      type: String,
+      enum: ["male", "female", "other", "prefer not to say"],
+      default: "prefer not to say",
+    },
+    age: {
+      type: Number,
+      min: 6,
+      max: 80,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
       default: "user",
     },
+    location: { type: String },
+    birthday: { type: Date },
+    summary: { type: String, maxlength: 1000 },
     profileImage: {
       publicId: String,
       secureUrl: String,
     },
+    github: { type: String },
+    linkedin: { type: String },
+    skills: [{ type: String }],
+    experience: [experienceSchema],
+    education: [educationSchema],
     problemSolved: {
       type: [
         {
