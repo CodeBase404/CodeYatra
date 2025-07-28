@@ -138,8 +138,8 @@ function App() {
         <Route
           path="/visualize-algo"
           element={
-               <PrivateRoute>
-            <Visualizer algorithm={algorithm} setAlgorithm={setAlgorithm} />
+            <PrivateRoute>
+              <Visualizer algorithm={algorithm} setAlgorithm={setAlgorithm} />
             </PrivateRoute>
           }
         />

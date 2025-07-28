@@ -86,7 +86,7 @@ function Controller({ input, setInput, speed, setSpeed, isPlaying, setIsPlaying,
           id='input'
           value={input}
           placeholder='Eg. 1 2 3'
-          className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold shadow shadow-pink-900'
+          className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold border border-black/20 dark:border-pink-500/30'
           onChange={(e) => setInput(e.target.value)}
         />  
 )}
@@ -101,7 +101,7 @@ function Controller({ input, setInput, speed, setSpeed, isPlaying, setIsPlaying,
                                 id='searchTarget'
                                 value={searchTarget || ''}
                                 placeholder='Enter the number to search'
-                                className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold shadow shadow-pink-900'
+                                className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold  border border-black/20 dark:border-pink-500/30 placeholder:text-sm'
                                 onChange={(e) => setSearchTarget(Number(e.target.value))}
                             />
                         </div>
@@ -129,14 +129,14 @@ function Controller({ input, setInput, speed, setSpeed, isPlaying, setIsPlaying,
                             type="number"
                             value={listInput}
                             placeholder="Value to insert"
-                            className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold shadow shadow-pink-900'
+                            className='w-[80%] rounded-md p-2 outline-none text-pink-700 font-semibold  border border-black/20 dark:border-pink-500/30'
                             onChange={(e) => setListInput(e.target.value)}
                         />
                         <input
                             type="number"
                             value={listIndex}
                             placeholder="Index (optional)"
-                            className='w-[80%] rounded-md p-2 mt-2 outline-none text-pink-700 font-semibold shadow shadow-pink-900'
+                            className='w-[80%] rounded-md p-2 mt-2 outline-none text-pink-700 font-semibold  border border-black/20 dark:border-pink-500/30'
                             onChange={(e) => setListIndex(e.target.value)}
                         />
                         <div className="flex gap-3 mt-2">

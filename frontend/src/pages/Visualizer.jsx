@@ -93,14 +93,14 @@ function Visualizer({ algorithm, setAlgorithm}) {
     }, [isPlaying, currentStep, steps, raceMode, raceSteps, algorithm, speed]);
 
     return (
-        <div className="relative min-h-screen pt-20 md:max-w-[95vw] container m-auto">
+        <div className="relative min-h-screen pt-18 md:max-w-[95vw] container m-auto">
             <motion.div
                 initial={false}
                 animate={{
                     width: showSidebar ? "28.5%" : "0px", opacity: showSidebar ? 1 : 0
                 }}
                 transition={{ duration: 0.5 }}
-                className="md:hidden block absolute top-9 text-[12px] md:top-0 left-0 z-15 h-full rounded-2xl [&::-webkit-scrollbar]:hidden border-l-2 border-r-2 border-pink-500 home bg-gray-950 overflow-auto p-4"
+                className="md:hidden block absolute top-9 text-[12px] md:top-0 left-0 z-15 h-full rounded-2xl border-2 border-pink-500 home bg-gray-950 overflow-auto p-4"
             >
                 <Sidebar algorithm={algorithm} algorithmType={algorithmType} setAlgorithmType={setAlgorithmType} setAlgorithm={setAlgorithm} raceMode={raceMode} setRaceMode={setRaceMode} />
             </motion.div>
@@ -111,11 +111,11 @@ function Visualizer({ algorithm, setAlgorithm}) {
                 animate={{
                     width: showSidebar ? "0px":"28.5%", opacity: showSidebar ? 0 : 1
                 }}
-                className="md:block hidden text-[12px] scrollbar-hide h-full rounded-2xl border-l-2 border-r-2 border-rose-500/50 dark:border-pink-500 home dark:bg-gray-950 overflow-auto p-3"
+                className="md:block hidden text-[12px] scrollbar-hide h-full rounded-xl border border-rose-500/20 shadow dark:shadow-white/20 shadow-black/20 dark:border-pink-500 home dark:bg-black/10 overflow-auto p-3"
             >
                 <Sidebar algorithm={algorithm} algorithmType={algorithmType} setAlgorithmType={setAlgorithmType} setAlgorithm={setAlgorithm} raceMode={raceMode} setRaceMode={setRaceMode} />
                 </motion.div>
-                <div className="border border-black/10 shadow shadow-black/50 dark:border-r-2 mb-2 md:mb-0 rounded-2xl dark:shadow-[0px_0px_10px_inset] dark:md:shadow-[0px_0px_20px_inset] dark:shadow-pink-700 md:w-[40%]">
+                <div className="border border-black/20 shadow shadow-black/20  mb-2 md:mb-0 rounded-lg  dark:shadow-pink-700 dark:border-pink-500 md:w-[40%]">
                     <Controller
                         input={input}
                         setInput={setInput}
@@ -154,7 +154,7 @@ function Visualizer({ algorithm, setAlgorithm}) {
                         <Pseudocode algorithm={algorithm[0]} />
                     )}
                 </div>
-                <div className="w-full dark:shadow-[0px_0px_10px_inset] dark:md:shadow-[0px_0px_20px_inset] dark:shadow-pink-700  md:h-full border-t-2 dark:border-b-2 border shadow shadow-black/50 border-black/10 dark:border-pink-900 rounded-2xl">
+                <div className="w-full md:h-full border shadow shadow-black/50 border-black/10 dark:border-pink-500 rounded-lg">
                     <div className="flex p-2 items-center justify-between">
                         <button className="cursor-pointer font-semibold text-center inline-flex text-[12px] text-white" onClick={() => setShowSidebar(!showSidebar)}>
                             <PanelLeft className="p-1 size-8 rounded-md bg-gray-200 text-black"/><span className="pt-1 pl-1 text-sm">&nbsp;Select algorithms</span>

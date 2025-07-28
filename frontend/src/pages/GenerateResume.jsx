@@ -273,14 +273,14 @@ const GenerateResume = () => {
       exit="out"
       className="min-h-screen flex items-center justify-center p-4"
     >
-      <div className="card w-full max-w-2xl bg-base-100 shadow-2xl">
+      <div className="card w-full max-w-2xl bg-base-100 dark:bg-purple-500/20 shadow-2xl">
         <div className="card-body text-center">
           <div className="mb-6">
-            <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
+            <div className="inline-block p-4 bg-primary/10 rounded-full mb-4 border border-white/10">
               <FaBrain className="text-4xl text-primary" />
             </div>
-            <h1 className="text-4xl font-bold mb-2">AI Resume Generator</h1>
-            <p className="text-lg opacity-70">
+            <h1 className="text-4xl font-bold mb-2 text-black dark:text-white">AI Resume Generator</h1>
+            <p className="text-lg opacity-70 dark:text-white">
               Tell us about yourself and let AI create your professional resume
             </p>
           </div>
@@ -290,7 +290,7 @@ const GenerateResume = () => {
               required: "Description is required",
             })}
             disabled={loading}
-            className="textarea textarea-bordered textarea-primary w-full h-48 mb-6 resize-none text-base"
+            className="textarea textarea-bordered textarea-success bg-white dark:bg-purple-500/50 w-full h-48 mb-6 resize-none text-base dark:text-white"
             placeholder="I am a software developer with 5 years of experience in React and Node.js. I have worked at several startups and built e-commerce platforms. I have a degree in Computer Science from Stanford University..."
             autoFocus
           />
