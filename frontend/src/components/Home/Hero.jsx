@@ -22,7 +22,6 @@ export const Hero = () => {
 
   return (
     <section className="relative pt-13 min-h-screen flex items-center justify-center overflow-hidden bg-white dark:bg-black/30">
-      {/* Animated Background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-64 h-64 bg-sky-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
         <div className="absolute top-40 right-20 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
@@ -93,7 +92,6 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-      {/* Header with icon */}
       <div className="absolute -rotate-15 top-30 right-35 floating-card flex items-center justify-center pt-6 pb-4">
         <div className="p-3 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 shadow-lg">
           <Users className="w-20 h-20 text-rose-400 group-hover:text-cyan-300 transition-colors duration-300" />

@@ -132,10 +132,10 @@ function FAQFAQChatAi() {
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="p-2 border-t border-black/10 dark:border-white/10">
+      <form onSubmit={handleSubmit(onSubmit)} className="p-2 border-t border-black/10 dark:border-white/20">
         <div className="flex gap-2 items-center">
           <textarea
-            className="input input-bordered bg-white pt-2 dark:bg-white/5 placeholder:text-black/30 dark:placeholder:text-white/70 flex-1 resize-none"
+            className="input input-bordered bg-white pt-2 text-black dark:text-white dark:bg-white/5 placeholder:text-black/30 dark:placeholder:text-white/70 flex-1 resize-none"
             placeholder="Ask your doubt related to platform..."
             {...register("message", { required: true })}
           />
