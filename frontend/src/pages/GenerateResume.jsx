@@ -219,7 +219,7 @@ const GenerateResume = () => {
             <button
               type="button"
               onClick={() => fields.remove(index)}
-              className="btn btn-error btn-sm mt-3 gap-2"
+              className="btn btn-error text-white btn-sm mt-3 gap-2"
             >
               <FaTrash />
               Remove {label.slice(0, -1)}
@@ -235,7 +235,7 @@ const GenerateResume = () => {
             fieldKeys.reduce((acc, key) => ({ ...acc, [key]: "" }), {})
           )
         }
-        className="btn btn-primary btn-outline gap-2"
+        className="btn btn-dash btn-primary btn-outline gap-2"
       >
         <FaPlusCircle />
         Add {label.slice(0, -1)}
@@ -466,14 +466,14 @@ const GenerateResume = () => {
             <button
               type="button"
               onClick={() => setCurrentStep("input")}
-              className="btn btn-ghost btn-lg gap-2"
+              className="btn btn-ghost border border-black/20 btn-lg gap-2"
             >
               <FaTrash />
               Start Over
             </button>
             <button
               type="submit"
-              className="btn btn-primary btn-lg gap-2 min-w-48"
+              className="btn btn-soft btn-primary btn-lg gap-2 min-w-48"
             >
               <FaRocket />
               Generate Resume
@@ -522,7 +522,7 @@ const GenerateResume = () => {
   );
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen pt-15">
         <div class="absolute overflow-hidden h-full w-full hidden dark:block dark:bg-black"><div class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div><div class="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div></div>
       <Toaster
         position="top-center"
