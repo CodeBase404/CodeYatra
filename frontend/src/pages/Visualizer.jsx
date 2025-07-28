@@ -162,7 +162,7 @@ function Visualizer({ algorithm, setAlgorithm}) {
                         <h2 className="text-[10px] lg:text-[15px] font-bold text-blue-500 shadow rounded-md p-1  shadow-[#a63deac8]">
                             Selected Algorithm : {algorithm.length > 0 ? <strong className="text-black/80 dark:text-[#a3ff12]"> {algorithm.join(", ")}</strong> : <strong className="text-red-600">None</strong>}
                         </h2>
-                    </div> 
+                    </div>
                     <div>
                         {algorithmType === "stack" && <Stack stack={stack} setStack={setStack} />}
                         {algorithmType === "linkedlist" && <LinkedList list={list} setList={setList} />}
