@@ -110,34 +110,17 @@ const CommentSection = ({ problemId }) => {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="max-w-4xl mx-auto p-6">
         {/* New Comment Box */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-6 border border-gray-700">
+        <div className="bg-gray-800 rounded-lg p-6 pb-3 mb-6 border border-gray-700">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Type comment here..."
-            className="w-full bg-transparent text-gray-300 placeholder-gray-500 resize-none outline-none text-lg min-h-[80px]"
+            className="w-full bg-transparent text-gray-300 placeholder-gray-500 resize-none outline-none text-lg min-h-[70px]"
           />
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center space-x-4">
-              <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300">
-                <span>Choose a type</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              <div className="flex items-center space-x-3">
-                <button className="p-2 bg-gray-700 rounded hover:bg-gray-600">
-                  <Code className="w-4 h-4 text-gray-300" />
-                </button>
-                <button className="p-2 bg-gray-700 rounded hover:bg-gray-600">
-                  <Link className="w-4 h-4 text-gray-300" />
-                </button>
-                <button className="p-2 bg-gray-700 rounded hover:bg-gray-600">
-                  <AtSign className="w-4 h-4 text-gray-300" />
-                </button>
-              </div>
-            </div>
+          <div className="w-full flex justify-end">
             <button
               onClick={handlePost}
-              className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
+              className="px-6 py-2 cursor-pointer bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
             >
               Comment
             </button>
@@ -150,7 +133,7 @@ const CommentSection = ({ problemId }) => {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-gray-800 text-white px-3 py-1 rounded border border-gray-600"
+            className="bg-gray-800 cursor-pointer text-white px-3 py-1 rounded border border-gray-600"
           >
             <option value="Best">Best</option>
             <option value="Newest">Newest</option>

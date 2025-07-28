@@ -1,3 +1,5 @@
+let bgAudio = null;
+
 export const isSoundEnabled = () => {
   return localStorage.getItem("sound-enabled") !== "false"; // default: true
 };
@@ -13,4 +15,22 @@ export const playClapSound = () => {
   const audio = new Audio("/sounds/clap.mp3");
   audio.volume = 0.8;
   audio.play().catch((err) => console.warn("Audio error:", err));
+};
+
+export const playBackgroundMusic = (url) => {
+  if (!isSoundEnabled() || url === "none") return;
+
+  stopBackgroundMusic();
+
+  bgAudio = new Audio(url || "/sounds/Saiyara.mp3");
+  bgAudio.loop = true;
+  bgAudio.volume = 0.04;
+  bgAudio.play().catch((err) => console.warn("BG music error:", err));
+};
+
+export const stopBackgroundMusic = () => {
+  if (bgAudio) {
+    bgAudio.pause();
+    bgAudio = null;
+  }
 };

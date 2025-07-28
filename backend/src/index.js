@@ -114,28 +114,14 @@ cron.schedule(
 const startServer = async () => {
   try {
     await Promise.all([connectToDb(), rediClient.connect()]);
-    console.log("✅ Database connected successfully");
+    console.log("Database connected successfully");
 
     server.listen(port, () => {
-      console.log(`🚀 Server is running on http://localhost:${port}`);
+      console.log(`Server is running on http://localhost:${port}`);
     });
   } catch (error) {
-    console.error("❌ Error starting server:", error);
+    console.error("Error starting server:", error);
   }
 };
 
 startServer();
-// // TEMP trigger for manual testing
-// (async () => {
-//   const today = new Date().toISOString().split("T")[0];
-//   const random = await Problem.aggregate([{ $sample: { size: 1 } }]);
-
-//   if (random.length > 0) {
-//     await DailyChallenge.findOneAndUpdate(
-//       { date: today },
-//       { problemId: random[0]._id },
-//       { upsert: true }
-//     );
-//     console.log(`✅ Daily challenge set for ${today}`);
-//   }
-// })();

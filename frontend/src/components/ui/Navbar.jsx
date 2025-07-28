@@ -22,6 +22,7 @@ import toast from "react-hot-toast";
 import { toggleTheme } from "../../features/ui/uiSlice";
 import TimerClock from "./TimerClock";
 import ProblemListSidebar from "./ProblemListSidebar";
+import BackgroundSoundPlayer from "./BackgroundSoundPlayer";
 
 function Navbar() {
   const [isopen, setIsOpen] = useState(false);
@@ -157,6 +158,7 @@ function Navbar() {
         </div>
       </div>
       <div className="flex items-center gap-4 md:gap-2 lg:gap-4">
+        <BackgroundSoundPlayer/>
         {path.startsWith("/problems/") && (
           <div
             onClick={() => setShow((prev) => !prev)}
