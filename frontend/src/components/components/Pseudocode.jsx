@@ -86,9 +86,9 @@ function Pseudocode({ algorithm }) {
     if (!algorithm || !pseudocode[algorithm]) return null;
 
     return (
-        <div className="shadow-md mt-2 shadow-white p-2 w-[95%] mb-3 md:w-[90%] m-auto rounded-lg">
+        <div className="shadow mt-2 shadow-black dark:shadow-white p-2 w-[95%] mb-3 md:w-[95%] m-auto rounded-lg">
             <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 lg:mb-2 flex items-center"><Code className='inline-block mr-1 text-purple-500'/>  Pseudocode</h3>
-            <pre className="text-white font-mono text-[9px] lg:text-[10px] whitespace-pre-wrap overflow-x-auto">
+            <pre className="text-black dark:text-white font-mono text-[9px] lg:text-[10px] whitespace-pre-wrap overflow-x-auto">
                 {pseudocode[algorithm]}
             </pre>
         </div>

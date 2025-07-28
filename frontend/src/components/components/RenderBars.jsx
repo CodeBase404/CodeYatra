@@ -17,6 +17,7 @@ function RenderBars({ arr, steps, currentStep,raceMode,algorithm,algorithmType, 
   }:{})
   }
   const [viewMode, setViewMode] = useState("box");
+  const isDarkMode = document.documentElement.classList.contains("dark");
 
   const barWidth = 42;
   const barSpacing = 50;
@@ -111,7 +112,7 @@ function RenderBars({ arr, steps, currentStep,raceMode,algorithm,algorithmType, 
                 x={index * (viewMode === "bars" ? barSpacing : (boxSize + gap)) + (viewMode === "bars" ? barWidth / 2 : boxSize / 2)}
                 y={viewMode === "bars" ? baseHeight + 25 : boxSize + 160}
                 textAnchor="middle"
-                fill="white"
+                 fill={!isDarkMode ? "white" : "black"}
                 fontWeight='bold'
                 fontSize={20}
               >
@@ -122,7 +123,7 @@ function RenderBars({ arr, steps, currentStep,raceMode,algorithm,algorithmType, 
           ))
         }
       </svg>
-      <ul className="absolute bottom-2 text-white flex justify-center gap-2 text-[4px] sm:left-5 sm:text-[9px] left-3 lg:left-5 lg:gap-10 md:text-[9px]">
+      <ul className="absolute bottom-2 text-black dark:text-white flex justify-center gap-2 text-[4px] sm:left-5 sm:text-[9px] left-3 lg:left-5 lg:gap-10 md:text-[9px]">
         {algorithmType === "searching" ? (
       <>
        <li>🔴 Current</li>

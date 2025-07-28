@@ -234,16 +234,16 @@ A stack is a linear data structure following the Last In, First Out (LIFO) princ
 
 function PseudocodeCard({ algorithm, data }) {
     return (
-        <div className="shadow-md overflow-y-scroll scrollbar-hide p-4 pt-2 shadow-green-400 font-semibold text-sm pl-4 m-auto h-full  rounded-lg mb-2  text-white">
-            <h3 className="text-2xl font-bold text-green-400 flex items-center">
+        <div className="shadow overflow-y-scroll scrollbar-hide p-4 pt-2 shadow-green-400 font-semibold text-sm pl-4 m-auto h-full  rounded-lg mb-2  text-white">
+            <h3 className="text-2xl font-bold text-black dark:text-white flex items-center">
                 <Code className='inline-block mr-2 text-purple-500' /> {algorithm}
             </h3>
-            <pre className="text-green-300 text-[12px] font-mono whitespace-pre-wrap overflow-x-auto">
+            <pre className="text-green-800 dark:text-green-300 text-[12px] font-mono whitespace-pre-wrap overflow-x-auto">
                 {data.code}
             </pre>
             <div className="mt-3 mb-3 space-y-2">
                 <h4 className="text-lg font-semibold text-purple-400">Time Complexity:</h4>
-                <ul className="list-disc space-y-1 pl-5">
+                <ul className="list-disc space-y-1 pl-5 dark:text-white text-black/90">
                     <li>Best Case: {data.timeComplexity.best}</li>
                     <li>Worst Case: {data.timeComplexity.worst}</li>
                     <li>Average Case: {data.timeComplexity.average}</li>
@@ -251,7 +251,7 @@ function PseudocodeCard({ algorithm, data }) {
             </div>
             <div className="space-y-2">
                 <h4 className="text-lg font-semibold text-red-400">When to Use:</h4>
-                <ul className="list-disc space-y-1 pl-5">
+                <ul className="list-disc space-y-1 pl-5 dark:text-white text-black/90">
                     {data.usage.map((point, index) => (
                         <li key={index}>{point}</li>
                     ))}
