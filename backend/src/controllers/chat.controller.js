@@ -1,5 +1,6 @@
 const aiFAQResponse = require("../configs/aiFAQResponse.js");
 const main = require("../configs/generateAiResponse.js");
+const generateTheResume = require("../configs/generateTheResume.js");
 const Chat = require("../models/chat.model.js");
 
 const solveDoubt = async (req, res) => {
@@ -113,4 +114,19 @@ const deleteChatById = async (req, res) => {
   }
 };
 
-module.exports = { solveDoubt, getChatById, deleteChatById, platformDoubt };
+const resumeBuilder = async (req, res) => {
+  const { description } = req.body;
+
+  try {
+    const responseText = await generateTheResume({ description });
+    console.log(responseText);
+    
+
+    res.status(200).json({ response: responseText });
+  } catch (err) {
+    console.error("ResumeBuilder error:", err);
+    res.status(500).json({ error: "Something went wrong." });
+  }
+};
+
+module.exports = { solveDoubt, getChatById, deleteChatById, platformDoubt, resumeBuilder };

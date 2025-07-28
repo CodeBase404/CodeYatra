@@ -150,6 +150,7 @@ function Navbar() {
               <NavLink to="/problemset">Problems</NavLink>
               <NavLink to="/contest">Contest</NavLink>
               <NavLink to="/ai-interview">Ai Interviewer</NavLink>
+              <NavLink to="/generate-resume">Generate Resume</NavLink>
               <NavLink to="/visualize-algo">DSA Visualizer</NavLink>
             </div>
           )}
