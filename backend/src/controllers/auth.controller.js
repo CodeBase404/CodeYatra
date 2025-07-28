@@ -116,6 +116,7 @@ const login = async (req, res) => {
       profileImage,
       isAccountVerified,
       premiumPlan,
+      streak,
     } = user;
 
     res.status(200).json({

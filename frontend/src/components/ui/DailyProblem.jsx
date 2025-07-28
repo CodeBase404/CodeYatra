@@ -45,7 +45,7 @@ const DailyProblem = () => {
 
   if (!challenge) {
     return (
-      <div className="w-full md:min-h-85 bg-white dark:bg-white/5 rounded-2xl shadow-lg border border-gray-200 dark:border-white/10 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+      <div className="w-full md:min-h-97 bg-white dark:bg-white/5 rounded-2xl shadow-lg border border-gray-200 dark:border-white/10 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-white">

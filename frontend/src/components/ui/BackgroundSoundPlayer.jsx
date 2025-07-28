@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { isSoundEnabled, playBackgroundMusic, stopBackgroundMusic } from "../../utils/sound";
 
 const tracks = [
@@ -14,11 +14,34 @@ export default function BackgroundSoundPlayer() {
     localStorage.getItem("bg-track") || tracks[0].url
   );
 
-  useEffect(() => {
-    stopBackgroundMusic(); // Always stop previous music
+  const hasUserInteracted = useRef(false);
 
-    if (isSoundEnabled() && selectedTrack !== "none") {
-      playBackgroundMusic(selectedTrack);
+  useEffect(() => {
+    const handler = () => {
+      hasUserInteracted.current = true;
+
+      if (isSoundEnabled() && selectedTrack !== "none") {
+        playBackgroundMusic(selectedTrack);
+      }
+
+      window.removeEventListener("click", handler);
+    };
+
+    window.addEventListener("click", handler);
+
+    return () => window.removeEventListener("click", handler);
+  }, []);
+
+  // ✅ Track changes only after interaction
+  useEffect(() => {
+    localStorage.setItem("bg-track", selectedTrack);
+
+    if (hasUserInteracted.current) {
+      stopBackgroundMusic();
+
+      if (isSoundEnabled() && selectedTrack !== "none") {
+        playBackgroundMusic(selectedTrack);
+      }
     }
 
     return () => stopBackgroundMusic();
@@ -26,7 +49,6 @@ export default function BackgroundSoundPlayer() {
 
   const handleChange = (e) => {
     const newTrack = e.target.value;
-    localStorage.setItem("bg-track", newTrack);
     setSelectedTrack(newTrack);
   };
 

@@ -109,6 +109,11 @@ const userSchema = new Schema(
     emailVerification: otpSchema,
     passwordReset: otpSchema,
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "problem" }],
+    streak: {
+      count: { type: Number, default: 0 },
+      lastSolvedDate: { type: Date },
+      highestStreak: { type: Number, default: 0 },
+    },
   },
   { timestamps: true }
 );

@@ -101,6 +101,31 @@ const submitCode = async (req, res) => {
       await req.user.save();
     }
 
+    if (status === "accepted") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const lastSolved = new Date(req.user.streak?.lastSolvedDate || 0);
+      lastSolved.setHours(0, 0, 0, 0);
+
+      const diffDays = Math.floor((today - lastSolved) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        req.user.streak.count += 1;
+      } else if (diffDays > 1) {
+        req.user.streak.count = 1;
+      } else if (diffDays === 0) {
+      }
+
+      req.user.streak.lastSolvedDate = today;
+      req.user.streak.highestStreak = Math.max(
+        req.user.streak.highestStreak || 0,
+        req.user.streak.count
+      );
+
+      await req.user.save();
+    }
+
     if (contestId && status === "accepted") {
       const alreadyAccepted = await Submission.findOne({
         userId,
@@ -109,7 +134,6 @@ const submitCode = async (req, res) => {
         status: "accepted",
       });
 
-      // 🎯 Emit leaderboard update only in contest mode
       if (
         !alreadyAccepted ||
         alreadyAccepted._id.toString() === submittedResult._id.toString()
@@ -250,9 +274,8 @@ const getAllSubmissions = async (req, res) => {
         select: "title",
       })
       .populate({ path: "userId", select: "firstName" });
-      
 
-   if (submission.length === 0) {
+    if (submission.length === 0) {
       return res.status(200).json({
         message: "No Submission is present",
         submission: [],
@@ -260,7 +283,7 @@ const getAllSubmissions = async (req, res) => {
       });
     }
 
-     const groupedSubmissions = {};
+    const groupedSubmissions = {};
     submission.forEach((sub) => {
       const date = new Date(sub.createdAt).toISOString().split("T")[0];
       if (!groupedSubmissions[date]) groupedSubmissions[date] = [];
