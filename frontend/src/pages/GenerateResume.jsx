@@ -140,7 +140,7 @@ const GenerateResume = () => {
   const renderInput = (name, label, type = "text", placeholder = "") => (
     <div className="form-control w-full mb-4">
       <label className="label">
-        <span className="label-text font-medium text-base-content">
+        <span className="label-text font-medium text-base-content dark:text-white pb-1.5">
           {label}
         </span>
       </label>
@@ -148,7 +148,7 @@ const GenerateResume = () => {
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className="input input-bordered input-primary w-full bg-base-100 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+        className="input input-bordered input-info dark:border-none! placeholder:text-gray-400 text-black dark:text-blue-300 w-full bg-base-100 dark:bg-white/20 focus:ring-1 focus:ring-primary/20 transition-all duration-200"
       />
     </div>
   );
@@ -156,7 +156,7 @@ const GenerateResume = () => {
   const renderTextarea = (name, label, rows = 3, placeholder = "") => (
     <div className="form-control w-full mb-4">
       <label className="label">
-        <span className="label-text font-medium text-base-content">
+        <span className="label-text font-medium text-base-content dark:text-white pb-1.5">
           {label}
         </span>
       </label>
@@ -164,7 +164,7 @@ const GenerateResume = () => {
         rows={rows}
         placeholder={placeholder}
         {...register(name)}
-        className="textarea textarea-bordered textarea-primary w-full bg-base-100 focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+        className="textarea textarea-bordered textarea-info w-full bg-base-100 dark:bg-white/10 placeholder:text-gray-400 dark:border-none! focus:ring-2 focus:ring-primary/20 transition-all duration-200"
       />
     </div>
   );
@@ -177,7 +177,9 @@ const GenerateResume = () => {
     >
       <div className="flex items-center gap-2 mb-4">
         <FaMagic className="text-primary" />
-        <h3 className="text-xl font-bold text-base-content">{label}</h3>
+        <h3 className="text-xl font-bold text-base-content dark:text-white">
+          {label}
+        </h3>
       </div>
 
       <AnimatePresence>
@@ -187,7 +189,7 @@ const GenerateResume = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="card bg-base-200 shadow-md p-4 mb-4 border border-base-300"
+            className={`card dark:bg-white/10 border border-black/10 dark:border-white/15 shadow-md p-4 mb-4`}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {fieldKeys.map((key) => {
@@ -279,7 +281,9 @@ const GenerateResume = () => {
             <div className="inline-block p-4 bg-primary/10 rounded-full mb-4 border border-white/10">
               <FaBrain className="text-4xl text-primary" />
             </div>
-            <h1 className="text-4xl font-bold mb-2 text-black dark:text-white">AI Resume Generator</h1>
+            <h1 className="text-4xl font-bold mb-2 text-black dark:text-white">
+              AI Resume Generator
+            </h1>
             <p className="text-lg opacity-70 dark:text-white">
               Tell us about yourself and let AI create your professional resume
             </p>
@@ -316,7 +320,7 @@ const GenerateResume = () => {
 
             <button
               onClick={() => reset({ description: "" })}
-              className="btn btn-ghost btn-lg gap-2"
+              className="btn btn-ghost btn-lg border-black/20 dark:border-white/20 dark:hover:text-black dark:text-white gap-2"
               disabled={loading}
             >
               <FaTrash />
@@ -335,15 +339,15 @@ const GenerateResume = () => {
       animate="in"
       exit="out"
       variants={pageVariants}
-      className="min-h-screen p-4"
+      className="relative z-50 min-h-screen p-4"
     >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <div className="inline-block p-4 bg-secondary/10 rounded-full mb-4">
-            <BiBook className="text-4xl text-secondary" />
+          <div className="inline-block p-4 bg-secondary/10 dark:bg-white/10 rounded-full mb-4">
+            <BiBook className="text-4xl text-secondary dark:text-yellow-500" />
           </div>
-          <h1 className="text-4xl font-bold mb-2">Review & Edit Your Resume</h1>
-          <p className="text-lg opacity-70">
+          <h1 className="text-4xl font-bold mb-2 dark:text-green-500">Review & Edit Your Resume</h1>
+          <p className="text-lg opacity-70 dark:text-gray-300">
             Fine-tune the generated information before creating your final
             resume
           </p>
@@ -351,9 +355,9 @@ const GenerateResume = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Personal Information */}
-          <div className="card bg-base-100 shadow-lg">
+          <div className="card bg-base-100 dark:bg-white/10 border border-black/10 dark:border-white/10 shadow-lg">
             <div className="card-body">
-              <h2 className="card-title text-2xl mb-4 flex items-center gap-2">
+              <h2 className="card-title dark:text-white text-2xl mb-4 flex items-center gap-2">
                 <FaMagic className="text-primary" />
                 Personal Information
               </h2>
@@ -399,9 +403,9 @@ const GenerateResume = () => {
           </div>
 
           {/* Professional Summary */}
-          <div className="card bg-base-100 shadow-lg">
+          <div className="card bg-base-100 dark:bg-white/15 border border-black/10 dark:border-white/10  shadow-lg">
             <div className="card-body">
-              <h2 className="card-title text-2xl mb-4 flex items-center gap-2">
+              <h2 className="card-title text-2xl text-black dark:text-white mb-4 flex items-center gap-2">
                 <FaMagic className="text-primary" />
                 Professional Summary
               </h2>
@@ -466,7 +470,7 @@ const GenerateResume = () => {
             <button
               type="button"
               onClick={() => setCurrentStep("input")}
-              className="btn btn-ghost border border-black/20 btn-lg gap-2"
+              className="btn btn-ghost border border-black/20 dark:border-white/20  dark:text-white dark:hover:text-black btn-lg gap-2"
             >
               <FaTrash />
               Start Over
@@ -491,11 +495,11 @@ const GenerateResume = () => {
       animate="in"
       exit="out"
       variants={pageVariants}
-      className="min-h-screen p-4"
+      className="min-h-screen p-4 relative z-50"
     >
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-2">Your Professional Resume</h1>
-        <p className="text-lg opacity-70">
+        <h1 className="text-4xl font-bold mb-2 dark:text-yellow-500">Your Professional Resume</h1>
+        <p className="text-lg opacity-70 dark:text-gray-300">
           Here's your beautifully crafted resume ready for download
         </p>
       </div>
@@ -505,14 +509,14 @@ const GenerateResume = () => {
       <div className="flex justify-center gap-4 mt-8">
         <button
           onClick={() => setCurrentStep("input")}
-          className="btn btn-ghost btn-lg gap-2"
+          className="btn btn-ghost btn-lg border border-black/10 dark:border-white/30 dark:text-white dark:hover:text-black gap-2"
         >
           <FaMagic />
           Generate New
         </button>
         <button
           onClick={() => setCurrentStep("form")}
-          className="btn btn-secondary btn-lg gap-2"
+          className="btn btn-soft btn-secondary btn-lg gap-2"
         >
           <FaEdit />
           Edit Resume
@@ -523,7 +527,10 @@ const GenerateResume = () => {
 
   return (
     <div className="relative min-h-screen pt-15">
-        <div class="absolute overflow-hidden h-full w-full hidden dark:block dark:bg-black"><div class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div><div class="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div></div>
+      <div className="absolute overflow-hidden h-full w-full hidden dark:block dark:bg-black">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+        <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div>
+      </div>
       <Toaster
         position="top-center"
         toastOptions={{
