@@ -39,16 +39,18 @@ const Profile = () => {
   const {
     register: registerProfile,
     handleSubmit: handleProfileSubmit,
-    formState: { errors: profileErrors },
+    formState: { errors: profileErrors, isSubmitting },
     reset: resetProfile,
+    control: profileControl,
   } = useForm({
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,
+      emailId: user?.emailId || user?.email || "",
       gender: user?.gender,
       age: user?.age,
       location: user?.location,
-      birthday: user?.birthday?.substring(0, 10), // format for input[type=date]
+      birthday: user?.birthday?.substring(0, 10),
       summary: user?.summary,
       github: user?.github,
       linkedin: user?.linkedin,
@@ -64,23 +66,24 @@ const Profile = () => {
     handleSubmit: handlePasswordSubmit,
     formState: { errors: passwordErrors },
     reset: resetPassword,
-    control,
     watch,
   } = useForm();
+
   const {
     fields: experienceFields,
     append: addExp,
     remove: removeExp,
   } = useFieldArray({
-    control,
+    control: profileControl,
     name: "experience",
   });
+
   const {
     fields: eduFields,
     append: addEdu,
     remove: removeEdu,
   } = useFieldArray({
-    control,
+    control: profileControl,
     name: "education",
   });
 
@@ -91,6 +94,7 @@ const Profile = () => {
       const res = await axiosClient.put("/user/update-profile", {
         firstName: data.firstName,
         lastName: data.lastName,
+        emailId: data.emailId,
         gender: data.gender,
         age: data.age,
         location: data.location,
@@ -99,6 +103,8 @@ const Profile = () => {
         skills: data.skills.split(",").map((s) => s.trim()),
         github: data.github,
         linkedin: data.linkedin,
+        experience: data.experience,
+        education: data.education,
         role: data.role,
       });
       dispatch(fetchUserProfile());
@@ -130,6 +136,27 @@ const Profile = () => {
     setIsEditing(false);
     resetProfile();
   };
+
+  useEffect(() => {
+    if (user) {
+      resetProfile({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        emailId: user.emailId || user.email || "",
+        gender: user.gender || "",
+        age: user.age || "",
+        location: user.location || "",
+        birthday: user.birthday?.substring(0, 10) || "",
+        summary: user.summary || "",
+        github: user.github || "",
+        linkedin: user.linkedin || "",
+        role: user.role || "",
+        skills: user.skills?.join(", ") || "",
+        experience: user.experience || [],
+        education: user.education || [],
+      });
+    }
+  }, [user, resetProfile]);
 
   const handleCancelPasswordChange = () => {
     setIsChangingPassword(false);
@@ -185,7 +212,7 @@ const Profile = () => {
               {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center cursor-pointer space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   <Edit3 className="w-4 h-4" />
                   <span>Edit Profile</span>
@@ -196,11 +223,35 @@ const Profile = () => {
             {isEditing ? (
               <form
                 onSubmit={handleProfileSubmit(onProfileSubmit)}
-                className="space-y-6"
+                className="relative space-y-6"
               >
+                <div className="flex items-center justify-end absolute -top-12 right-0 space-x-4">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`inline-flex items-center cursor-pointer space-x-2 px-6 py-3 rounded-lg transition-colors
+                    ${
+                      isSubmitting
+                        ? "bg-green-300 cursor-not-allowed"
+                        : "bg-green-600/50 hover:bg-green-700 text-white"
+                    }
+                  `}
+                  >
+                    <Save className="w-4 h-4" />
+                    <span>{isSubmitting ? "Saving..." : "Save Changes"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="inline-flex items-center cursor-pointer space-x-2 px-6 py-3 bg-gray-600/50 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                    <span>Cancel</span>
+                  </button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 ">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-black dark:text-white mb-2">
                       First Name
                     </label>
                     <input
@@ -228,6 +279,16 @@ const Profile = () => {
                       {...registerProfile("lastName")}
                       className="w-full px-4 py-3 border rounded-lg"
                       placeholder="Enter your last name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email
+                    </label>
+                    <input
+                      {...registerProfile("emailId")}
+                      className="w-full px-4 py-3 border rounded-lg"
+                      placeholder="Enter your email"
                     />
                   </div>
                   {user?.role === "admin" && (
@@ -315,7 +376,7 @@ const Profile = () => {
                     />
                   </div>
 
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Skills (comma-separated)
                     </label>
@@ -452,48 +513,32 @@ const Profile = () => {
                     />
                   </div>
                 </div>
-
-                <div className="flex items-center space-x-4">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center space-x-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                  >
-                    <Save className="w-4 h-4" />
-                    <span>Save Changes</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCancelEdit}
-                    className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                    <span>Cancel</span>
-                  </button>
-                </div>
               </form>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  <label className="block text-sm font-medium text-black dark:text-white   mb-1">
                     First Name
                   </label>
-                  <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                  <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                     {user?.firstName}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Last Name</label>
-                  <p className="text-lg text-gray-800">
-                    {user?.lastName || "—"}
+                <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <label className="text-sm text-black dark:text-white">
+                    Last Name
+                  </label>
+                  <p className="text-lg text-gray-800 dark:text-gray-200">
+                    {user?.lastName || "---"}
                   </p>
                 </div>
                 <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  <label className="block text-sm font-medium text-black dark:text-white   mb-1">
                     Email
                   </label>
                   <div className="flex items-center space-x-2">
                     <Mail className="w-4 h-4 text-gray-400" />
-                    <p className="text-lg font-semibold text-gray-800 dark:text-white">
+                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
                       {user?.emailId || user?.email}
                     </p>
                     <span className="text-xs text-gray-500">(Immutable)</span>
@@ -501,91 +546,117 @@ const Profile = () => {
                 </div>
                 {user?.role === "admin" && (
                   <div className="bg-gray-50 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
-                    <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                    <label className="block text-sm font-medium text-black dark:text-white   mb-1">
                       Role
                     </label>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-white capitalize">
+                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200 capitalize">
                       {user?.role}
                     </p>
                   </div>
                 )}
 
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Gender</label>
-                  <p className="text-lg text-gray-800 capitalize">
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-sm text-black dark:text-white font-semibold">
+                    Gender
+                  </label>
+                  <p className="text-lg text-gray-800  dark:text-gray-200 capitalize">
                     {user?.gender || "—"}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Age</label>
-                  <p className="text-lg text-gray-800">{user?.age || "—"}</p>
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-sm  text-black dark:text-white font-semibold">
+                    Age
+                  </label>
+                  <p className="text-lg text-gray-800  dark:text-gray-200">
+                    {user?.age || "—"}
+                  </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Location</label>
-                  <p className="text-lg text-gray-800">
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-sm  text-black dark:text-white font-semibold">
+                    Location
+                  </label>
+                  <p className="text-lg text-gray-800  dark:text-gray-200">
                     {user?.location || "—"}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Birthday</label>
-                  <p className="text-lg text-gray-800">
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-sm  text-black dark:text-white font-semibold">
+                    Birthday
+                  </label>
+                  <p className="text-lg text-gray-800  dark:text-gray-200">
                     {user?.birthday ? formatDate(user.birthday) : "—"}
                   </p>
                 </div>
-                <div className="md:col-span-2 bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">Summary</label>
-                  <p className="text-lg text-gray-800">
+                <div className="md:col-span-2 bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-black dark:text-white font-semibold mb-1 text-xl">
+                    Summary
+                  </label>
+                  <p className="text-lg text-gray-600  dark:text-gray-200">
                     {user?.summary || "—"}
                   </p>
                 </div>
-                <div className="mb-6">
-                  <h2 className="text-xl font-bold">Skills</h2>
+                <div className="md:col-span-2 dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h2 className="text-xl font-semibold text-black dark:text-white mb-1">
+                    Skills
+                  </h2>
                   <ul className="flex flex-wrap gap-2">
                     {user.skills?.map((skill, idx) => (
                       <li
                         key={idx}
-                        className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                        className="bg-blue-100 dark:bg-white/10 text-blue-700 dark:text-yellow-100 px-3 py-1 rounded-full text-sm"
                       >
                         {skill}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold">Experience</h3>
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="text-xl font-semibold text-black dark:text-white">
+                    Experience
+                  </h3>
                   {user?.experience?.map((exp, idx) => (
-                    <div key={idx} className="mt-2 border-b pb-2">
-                      <p className="font-medium">
+                    <div key={idx} className="mt-2">
+                      <p className="font-medium text-yellow-500">
                         {exp.position} @ {exp.company}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-700 mb-2 dark:text-gray-300">
                         {formatDate(exp.startDate)} -{" "}
                         {exp.endDate ? formatDate(exp.endDate) : "Present"}
                       </p>
-                      <p>{exp.description}</p>
+                      <p className="text-gray-800 dark:text-gray-100">
+                        {exp.description}
+                      </p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mb-6">
-                  <h3 className="text-lg font-semibold">Education</h3>
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-black dark:text-white">
+                    Education
+                  </h3>
                   {user?.education?.map((edu, idx) => (
-                    <div key={idx} className="mt-2 border-b pb-2">
-                      <p className="font-medium">
+                    <div key={idx} className="mt-2">
+                      <p className="font-medium text-yellow-500">
                         {edu.degree} in {edu.fieldOfStudy}
                       </p>
-                      <p className="text-sm text-gray-500">{edu.school}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        {edu.school}
+                      </p>
+                      <p className="text-sm text-gray-800 mb-2 dark:text-gray-100">
                         {formatDate(edu.startDate)} -{" "}
                         {edu.endDate ? formatDate(edu.endDate) : "Present"}
                       </p>
-                      <p>{edu.description}</p>
+                      <p className="text-gray-800 dark:text-gray-100">
+                        {edu.description}
+                      </p>
                     </div>
                   ))}
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">GitHub</label>
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10 p-4 rounded-lg">
+                  <label className="text-sm text-gray-500 dark:text-white font-semibold">
+                    GitHub :{" "}
+                  </label>
                   <a
                     href={user?.github}
                     target="_blank"
@@ -595,8 +666,10 @@ const Profile = () => {
                     {user?.github || "—"}
                   </a>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <label className="text-sm text-gray-500">LinkedIn</label>
+                <div className="bg-gray-50  dark:bg-white/5 border border-white/10  p-4 rounded-lg">
+                  <label className="text-sm text-gray-500 dark:text-white font-semibold">
+                    LinkedIn :{" "}
+                  </label>
                   <a
                     href={user?.linkedin}
                     target="_blank"
@@ -648,20 +721,21 @@ const Profile = () => {
                 Password & Security
               </h2>
               <div className="flex items-center gap-3">
-                  <NavLink to="/forgot-password"
+                <NavLink
+                  to="/forgot-password"
                   className=" cursor-pointer font-semibold text-[16px] btn btn-dash btn-primary"
                 >
                   Forgot password?
                 </NavLink>
-              {!isChangingPassword && (
-                <button
-                  onClick={() => setIsChangingPassword(true)}
-                  className="inline-flex items-center space-x-2 px-4 py-2 btn btn-dash btn-error hover:text-white dark:text-white rounded-lg transition-colors"
-                >
-                  <Lock className="w-4 h-4" />
-                  <span>Change Password</span>
-                </button>
-              )}
+                {!isChangingPassword && (
+                  <button
+                    onClick={() => setIsChangingPassword(true)}
+                    className="inline-flex items-center space-x-2 px-4 py-2 btn btn-dash btn-error hover:text-white dark:text-white rounded-lg transition-colors"
+                  >
+                    <Lock className="w-4 h-4" />
+                    <span>Change Password</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -784,7 +858,7 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-end space-x-4">
-                    <button
+                  <button
                     type="button"
                     onClick={handleCancelPasswordChange}
                     className="inline-flex items-center space-x-2 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"

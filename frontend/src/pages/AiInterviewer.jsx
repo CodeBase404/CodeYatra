@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Mic, MicOff, Play, User, Bot, Volume2 } from "lucide-react";
 import Vapi from "@vapi-ai/web";
 
-const INITIAL_PROMPT = "To start the interview, just say 'Hey, hello'.";
+const INITIAL_MESSAGE = "To start the interview, just say 'Hey, hello'.";
+const INITIAL_PROMPT = "Hi! It's great to meet you. Let's begin — can you briefly introduce yourself.";
 
 function AiInterviewer() {
   const [isConnected, setIsConnected] = useState(false);
@@ -81,7 +82,7 @@ function AiInterviewer() {
         {
           id: "1",
           type: "ai",
-          content: INITIAL_PROMPT,
+          content: INITIAL_MESSAGE,
         },
       ]);
     } catch (error) {
@@ -222,9 +223,9 @@ function AiInterviewer() {
               whileTap={{ scale: 0.95 }}
               onClick={startInterview}
               disabled={connectionStatus === "connecting"}
-              className="px-8 py-3 disabled:opacity-50 btn btn-soft btn-success border border-black/10 dark:border-white/50 disabled:cursor-not-allowed font-semibold hover:text-white dark:hover:bg-green-400/10 flex items-center gap-2"
+              className="px-8 py-3 btn btn-primary disabled:cursor-not-allowed dark:border border-white/30 rounded font-semibold flex items-center gap-2"
             >
-              <Play className="w-5 h-5" />
+              <Play className={`w-5 h-5 ${connectionStatus === "connecting" &&"dark:text-white/30"}`} />
               {connectionStatus === "connecting"
                 ? "Starting..."
                 : "Start Interview"}

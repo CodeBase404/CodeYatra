@@ -5,16 +5,19 @@ import ProblemsList from "../components/ui/ProblemsList";
 import { getAllSubmissions, fetchAllProblems } from "../features/problem/problemThunks";
 import { useEffect, useState } from "react";
 import StreakWidget from "../components/ui/StreakWidget";
+import { fetchUserProfile } from "../features/auth/authThunks";
 
 function ProblemSet() {
   const [selectedDate, setSelectedDate] = useState(null);
   const { allSubmission } = useSelector((state) => state.problems);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  console.log(user);
+  
   useEffect(() => {
     dispatch(getAllSubmissions());
     dispatch(fetchAllProblems());
+    dispatch(fetchUserProfile());
   }, [dispatch]);
 
   return (

@@ -1,7 +1,7 @@
 let bgAudio = null;
 
 export const isSoundEnabled = () => {
-  return localStorage.getItem("sound-enabled") !== "false"; // default: true
+  return localStorage.getItem("sound-enabled") !== "false";
 };
 
 export const toggleSound = () => {
@@ -22,7 +22,7 @@ export const playBackgroundMusic = (url) => {
 
   stopBackgroundMusic();
 
-  bgAudio = new Audio(url || "/sounds/Saiyara.mp3");
+  bgAudio = new Audio(url);
   bgAudio.loop = true;
   bgAudio.volume = 0.04;
   bgAudio.play().catch((err) => console.warn("BG music error:", err));

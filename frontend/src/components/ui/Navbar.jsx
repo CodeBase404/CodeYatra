@@ -181,7 +181,7 @@ function Navbar() {
                 </div>
               )}
               {time > 0 && getDisplayTime()}
-              <div className=" rounded-md text-black dark:text-white cursor-pointer hover:bg-white/10">
+              <div className={`rounded-md text-black dark:text-white cursor-pointer ${time > 0 && "p-1 rounded-md hover:bg-white/10"}`}>
                 {time > 0 ? (
                   <RefreshCw className="w-4 h-4" />
                 ) : (

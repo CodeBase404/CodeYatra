@@ -81,11 +81,24 @@ cron.schedule(
     const today = new Date().toISOString().split("T")[0];
 
     try {
+      const existingToday = await DailyChallenge.findOne({ date: today });
+      if (existingToday) {
+        console.log(`Challenge for ${today} already exists.`);
+        return;
+      }
+      const totalProblems = await Problem.countDocuments();
       const recentChallenges = await DailyChallenge.find()
         .sort({ date: -1 })
-        .limit(7);
+        .limit(totalProblems);
 
-      const usedProblemIds = recentChallenges.map((entry) => entry.problemId);
+      const usedProblemIds = recentChallenges.map(
+        (entry) => new mongoose.Types.ObjectId(entry.problemId)
+      );
+
+      if (usedProblemIds.length >= totalProblems) {
+        console.log("All problems used recently. Resetting usedProblemIds.");
+        usedProblemIds = [];
+      }
 
       const random = await Problem.aggregate([
         { $match: { _id: { $nin: usedProblemIds } } },
@@ -93,17 +106,22 @@ cron.schedule(
       ]);
 
       if (random.length > 0) {
+        const selectedProblem = random[0];
+
         await DailyChallenge.findOneAndUpdate(
           { date: today },
-          { problemId: random[0]._id },
+          { problemId: selectedProblem._id },
           { upsert: true }
         );
-        console.log(`Daily challenge set for ${today}: ${random[0]._id}`);
+
+        console.log(
+          `✅ Daily challenge set for ${today}: ${selectedProblem._id}`
+        );
       } else {
-        console.log("No new problems available to set as daily challenge.");
+        console.log("⚠️ No new problems available to set as daily challenge.");
       }
     } catch (error) {
-      console.error("Error setting daily challenge:", error);
+      console.error("❌ Error setting daily challenge:", error);
     }
   },
   {

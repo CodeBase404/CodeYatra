@@ -1,12 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  Clock,
-  Play,
-  Timer,
-  RotateCcw,
-  Plus,
-  Minus,
-} from "lucide-react";
+import { Clock, Play, Timer, RotateCcw, Plus, Minus } from "lucide-react";
 
 function TimerClock({
   show,
@@ -18,38 +11,11 @@ function TimerClock({
   setTime,
   timerDuration,
   setTimerDuration,
-  setShow
+  setShow,
 }) {
   const [inputMode, setInputMode] = useState(false);
   const intervalRef = useRef(null);
-
-  useEffect(() => {
-    if (isRunning) {
-      intervalRef.current = setInterval(() => {
-        setTime((prev) => {
-          if (mode === "stopwatch") {
-            return prev + 1;
-          } else {
-            if (prev <= 1) {
-              setIsRunning(false);
-              return 0;
-            }
-            return prev - 1;
-          }
-        });
-      }, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isRunning, mode]);
+  const cardRef = useRef(null);
 
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
@@ -76,11 +42,7 @@ function TimerClock({
     }
     setIsRunning((prev) => !prev);
     setInputMode(false);
-    setShow(false)
-  };
-
-  const handlePause = () => {
-    setIsRunning(false);
+    setShow(false);
   };
 
   const handleReset = () => {
@@ -127,12 +89,57 @@ function TimerClock({
     return formatTime(time);
   };
 
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setTime((prev) => {
+          if (mode === "stopwatch") {
+            return prev + 1;
+          } else {
+            if (prev <= 1) {
+              setIsRunning(false);
+              return 0;
+            }
+            return prev - 1;
+          }
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning, mode]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cardRef.current && !cardRef.current.contains(event.target)) {
+        setShow(false);
+      }
+    };
+
+    if (show) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [show]);
 
   return (
     <div className=" w-full flex items-center justify-center p-4">
       {show && (
-        <div className="bg-purple-900 dark:bg-black backdrop-blur-3xl border border-white/20 rounded-2xl p-6 shadow-2xl space-y-6">
-          {/* Mode Selection */}
+        <div
+          ref={cardRef}
+          className="bg-purple-900 dark:bg-black backdrop-blur-3xl border border-white/20 rounded-2xl p-6 shadow-2xl space-y-6"
+        >
           <div className="flex w-full justify-between gap-3">
             <button
               onClick={() => handleModeChange("stopwatch")}
@@ -158,27 +165,25 @@ function TimerClock({
             </button>
           </div>
 
-          {/* Time Display */}
           <div className="relative">
-            <div onClick={() => setInputMode(!inputMode)}  className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 text-center">
+            <div
+              onClick={() => setInputMode(!inputMode)}
+              className="bg-black/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 text-center"
+            >
               <div className="text-6xl font-light text-white font-mono tracking-wider">
                 {getDisplayTime()}
               </div>
 
               {mode === "timer" && !isRunning && time === 0 && (
-                <button 
-                  className="text-sm text-white/60 pt-2 hover:text-white transition-colors"
-                >
+                <button className="text-sm text-white/60 pt-2 hover:text-white transition-colors">
                   Click to set duration
                 </button>
               )}
             </div>
 
-            {/* Timer Duration Input */}
             {mode === "timer" && inputMode && !isRunning && (
               <div className="mt-4 bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4">
                 <div className="flex justify-center space-x-6">
-                  {/* Hours */}
                   <div className="text-center">
                     <button
                       onClick={() => updateTimerDuration("hours", true)}
@@ -198,7 +203,6 @@ function TimerClock({
                     </button>
                   </div>
 
-                  {/* Minutes */}
                   <div className="text-center">
                     <button
                       onClick={() => updateTimerDuration("minutes", true)}
@@ -218,7 +222,6 @@ function TimerClock({
                     </button>
                   </div>
 
-                  {/* Seconds */}
                   <div className="text-center">
                     <button
                       onClick={() => updateTimerDuration("seconds", true)}
@@ -242,7 +245,6 @@ function TimerClock({
             )}
           </div>
 
-          {/* Control Buttons */}
           <div className="space-y-3">
             {!isRunning ? (
               <button

@@ -2,11 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import { isSoundEnabled, playBackgroundMusic, stopBackgroundMusic } from "../../utils/sound";
 
 const tracks = [
-  { name: "Sapphire", url: "/sounds/Sapphire.mp3" },
-  { name: "Saiyara", url: "/sounds/Saiyara.mp3" },
-  { name: "None", url: "none" },
-  { name: "Wavy", url: "/sounds/Wavy.mp3" },
   { name: "All is Well", url: "/sounds/AllisWell.mp3" },
+  { name: "Sapphire", url: "/sounds/Sapphire.mp3" },
+  { name: "None", url: "none" },
 ];
 
 export default function BackgroundSoundPlayer() {
